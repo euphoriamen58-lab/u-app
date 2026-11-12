@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#FE5117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Réplica académica no oficial de la Ulima App. Datos de ejemplo.">
+<meta name="apple-mobile-web-app-title" content="Ulima App">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<title>Ulima App · Réplica académica</title>
+<style>
+/* ==========================================================================
+   Réplica académica de la Ulima App (no oficial) — estilos
+   Medidas y colores tomados de capturas reales de un iPhone (390 × 844 pt):
+   1 px CSS = 1 pt.
+   ========================================================================== */
+:root{
+  --orange:#FE5117;          /* barra superior, botones */
+  --orange-edge:#FE4F18;
+  --peach:#F3CDB6;           /* franja "Actualizado" / fecha */
+  --peach-light:#F4E3DB;     /* bloque de resumen (Asistencia, Rendimiento) */
+  --cream:#F1ECE6;           /* fondo del menú lateral y de listas agrupadas */
+  --brown:#4A1C04;           /* texto sobre durazno */
+  --brown-line:#644330;
+  --brown-line-2:#9E8D85;
+  --tan:#978169;             /* "Actualizado: Ahora" dentro del bloque */
+  --section-gray:#E5E5E5;
+  --section-text:#826A60;
+  --tabbar:#343434;
+  --tab-off:#929292;
+  --green:#31D059;
+  --red:#FC4639;
+  --track:rgba(0,0,0,.175);  /* porción gris (horas por dictar) */
+  --hour:#6A6A6A;
+  --hline:#EBEBEB;
+  --sep:#A8A8A8;             /* líneas de lista (se dibujan a 0.5 pt) */
+  --sep-light:#E4E4E4;
+  --muted:#6F6F6F;
+  --icon-gray:#727272;
+  --chev:#848388;
+  --drawer-text:#86817E;
+  --drawer-icon:#89868D;
+  --drawer-sel:#F89F7F;
+  --chat-bg:#F2F2F7;
+  --bubble-border:#E5E5EA;
+  --lime:#B6CF36;            /* franja del carné */
+  --carne-orange:#EC7624;
+  --carne-line:#F28B4C;
+  --photo-bg:#DADEE0;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Inter","Helvetica Neue",Roboto,"Segoe UI",Arial,sans-serif;
+  --sat:47px;                /* zona segura superior (iPhone) */
+  --sab:34px;                /* zona segura inferior (indicador de inicio) */
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.app{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.app input,.app textarea{-webkit-user-select:text;user-select:text}
+body{font-family:var(--font);color:#000;background:radial-gradient(circle at 50% 30%,#ececf0 0%,#cdcdd4 100%);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;margin:0;cursor:pointer;text-align:inherit}
+input,textarea{font-family:inherit}
+svg{display:block}
+
+/* ---------- Marco de teléfono (solo en escritorio) ---------- */
+.stage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(var(--fit,1));transform-origin:center center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.device{position:relative;width:414px;height:868px;border-radius:60px;background:#111113;padding:12px;
+  box-shadow:0 40px 80px rgba(0,0,0,.28),0 0 0 2px #3a3a3e inset,0 0 0 6px #1d1d20 inset}
+.device::before{content:"";position:absolute;left:-3px;top:170px;width:3px;height:64px;border-radius:2px;background:#2a2a2d;box-shadow:0 90px 0 #2a2a2d}
+.device::after{content:"";position:absolute;right:-3px;top:230px;width:3px;height:96px;border-radius:2px;background:#2a2a2d}
+.screen{position:relative;width:390px;height:844px;border-radius:48px;overflow:hidden;background:#fff;isolation:isolate}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:162px;height:32px;background:#000;border-radius:0 0 20px 20px;z-index:90;pointer-events:none}
+.caption{font-size:12px;color:#55555c;text-align:center;line-height:1.5}
+.caption b{color:#333}
+
+/* ---------- Barra de estado simulada ---------- */
+.statusbar{position:absolute;left:0;right:0;top:0;height:47px;z-index:80;pointer-events:none;color:#fff;transition:color .2s}
+.statusbar.dark{color:#000}
+.statusbar .sb-time{position:absolute;left:0;width:98px;top:13px;text-align:center;font-weight:600;font-size:17px;letter-spacing:-.3px}
+.statusbar .sb-right{position:absolute;right:22px;top:17px;display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600}
+.home-ind{position:absolute;left:50%;bottom:8px;width:139px;height:5px;border-radius:3px;background:#000;transform:translateX(-50%);z-index:85;pointer-events:none;transition:background .2s}
+.home-ind.light{background:#fff}
+
+/* ---------- Aplicación y vistas ---------- */
+.app{position:absolute;inset:0;overflow:hidden;background:#fff}
+.views{position:absolute;inset:0}
+.view{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff;overflow:hidden}
+.view.push-in{animation:pushIn .34s cubic-bezier(.2,.8,.2,1) both}
+.view.push-out{animation:pushOut .28s cubic-bezier(.4,0,.6,1) both}
+.view.under{animation:under .34s cubic-bezier(.2,.8,.2,1) both}
+.view.under-back{animation:underBack .28s cubic-bezier(.4,0,.6,1) both}
+.view.fade-in{animation:fadeIn .3s ease both}
+@keyframes pushIn{from{transform:translateX(100%)}to{transform:none}}
+@keyframes pushOut{from{transform:none}to{transform:translateX(100%)}}
+@keyframes under{from{transform:none}to{transform:translateX(-30%)}}
+@keyframes underBack{from{transform:translateX(-30%)}to{transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Cabecera naranja = zona segura + barra de 44 pt */
+.topbar{flex:none;background:var(--orange);color:#fff;padding-top:var(--sat);position:relative;z-index:3}
+.appbar{height:44px;position:relative}
+.ab-left,.ab-right{position:absolute;top:0;height:44px;display:flex;align-items:center;color:#fff;z-index:2}
+.ab-left{left:0;padding:0 14px 0 19px}
+.ab-left.back{padding-left:9px}
+.ab-right{right:0;padding:0 18px 0 14px}
+.ab-title{position:absolute;left:64px;right:64px;top:0;height:44px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:18px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.ab-title.upper{text-transform:uppercase}
+.i-burger{width:24px;height:15px}
+.i-back{width:12px;height:20px}
+.i-eye{width:31px;height:20px}
+.i-mail{width:36px;height:26px}
+.i-sync{width:27px;height:24px}
+
+/* Franja durazno (39 pt) */
+.subheader{flex:none;height:39px;background:var(--peach);color:var(--brown);display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;z-index:2}
+.subheader.date{font-size:18px;font-weight:600;justify-content:space-between}
+.subheader .sh-arrow{height:39px;width:56px;display:flex;align-items:center;color:var(--orange)}
+.subheader .sh-arrow.l{padding-left:15px}
+.subheader .sh-arrow.r{justify-content:flex-end;padding-right:16px}
+.subheader .sh-arrow svg{width:12px;height:20px}
+.subheader .sh-mid{flex:1;text-align:center}
+
+.content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;background:#fff;overscroll-behavior:contain}
+.content.cream{background:var(--cream)}
+.content.gray{background:var(--chat-bg)}
+.content::-webkit-scrollbar{width:0;height:0}
+
+/* Barra inferior oscura (46 pt + zona segura) */
+.tabbar{flex:none;background:var(--tabbar);display:flex;height:calc(46px + var(--sab));padding-bottom:var(--sab);position:relative;z-index:3}
+.tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;padding-top:4px;color:var(--tab-off);font-size:11px;letter-spacing:.1px}
+.tabbar .tab svg{width:26px;height:26px;margin-bottom:5px}
+.tabbar .tab.on{color:#fff}
+
+/* Línea fina de 0.5 pt */
+.hair{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--sep);transform:scaleY(.5);transform-origin:bottom}
+
+/* ---------- Aula Virtual ---------- */
+.course{position:relative;display:block;width:100%;height:104.5px;background:#fff;text-align:left}
+.course:active{background:#f4f4f4}
+.course .dot{position:absolute;left:16.4px;top:calc(50% - 8.5px);width:17px;height:17px;border-radius:50%}
+.course .c-text{position:absolute;left:42.7px;right:130px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.course .c-name{font-size:18px;line-height:22px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px}
+.course .c-sec{font-size:15px;line-height:20px;color:var(--muted)}
+.course .c-pct{position:absolute;left:266px;top:21px;font-size:12px;line-height:14px}
+.course .c-donut{position:absolute;left:289px;top:calc(50% - 31.5px);width:63px;height:63px}
+.course .c-chev{position:absolute;left:364px;top:calc(50% - 5.5px);width:7px;height:11px;color:#707070}
+.privacy .c-pct,.privacy .c-donut{visibility:hidden}
+.privacy .c-hidden{display:block}
+.c-hidden{display:none;position:absolute;left:300px;top:calc(50% - 9px);font-size:15px;color:#b4b4b8;letter-spacing:3px}
+.float-btn{position:absolute;left:17px;right:17px;bottom:calc(46px + var(--sab) + 20px);height:55px;border-radius:12px;background:var(--orange);color:#fff;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;z-index:4;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.float-btn:active{filter:brightness(.93)}
+
+/* ---------- Horario ---------- */
+.timeline{position:relative;height:calc(22.4px + 15 * 39.2px + 32px)}
+.tl-line{position:absolute;left:47px;right:0;height:1px;background:var(--hline)}
+.tl-label{position:absolute;left:0;width:39.6px;text-align:right;color:var(--hour);white-space:nowrap;transform:translateY(-50%);line-height:1}
+.tl-label b{font-weight:400;font-size:13px}
+.tl-label small{font-size:11px;margin-left:2px}
+.tl-block{position:absolute;left:51.7px;right:7.9px;border-radius:5px;color:#fff;padding:6px 7.4px;overflow:hidden;text-align:left;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch}
+.tl-block .b1{font-size:13px;line-height:15.3px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-block .b2{font-size:13px;line-height:15.3px;font-weight:700;color:rgba(255,255,255,.9);text-transform:uppercase;letter-spacing:.3px}
+.tl-empty{position:absolute;left:52px;right:8px;top:200px;text-align:center;color:#9a9a9e;font-size:15px}
+
+/* ---------- Detalle de curso ---------- */
+.summary{position:relative;background:var(--peach-light);color:var(--brown);flex:none}
+.att{height:195px}
+.att .a-title{position:absolute;left:16px;width:212px;top:13.5px;text-align:center;font-size:19px;font-weight:700}
+.att .a-row{position:absolute;left:16.9px;display:flex;align-items:center;gap:10px;font-size:18px;line-height:24px}
+.att .a-row svg{width:16px;height:16px;flex:none}
+.att .a-line{position:absolute;left:16.4px;width:211px;top:108px;height:1px;background:var(--brown-line);transform:scaleY(.6)}
+.att .a-donut{position:absolute;left:248px;top:15.6px;width:136px;height:136px}
+.att .a-upd{position:absolute;left:0;right:0;top:161px;text-align:center;font-size:16px;color:var(--tan)}
+.menu-row{position:relative;display:flex;align-items:center;width:100%;height:125.6px;background:#fff;text-align:left}
+.menu-row:active{background:#f4f4f4}
+.menu-row .m-ic{position:absolute;left:16.9px;width:22px;height:22px;color:var(--icon-gray)}
+.menu-row .m-label{position:absolute;left:63.9px;font-size:21px}
+.menu-row .m-chev{position:absolute;left:363px;width:10px;height:18px;color:var(--chev)}
+.menu-row.short{height:72px}
+
+/* Notas */
+.perf{padding:45px 0 24.2px}
+.perf .p-title{position:absolute;left:0;right:0;top:14.5px;text-align:center;font-size:19px;font-weight:700}
+.perf .p-row{position:relative;height:22px;margin:0 0 9px 17.9px;font-size:16.5px;line-height:22px}
+.perf .p-row.final{margin-bottom:0}
+.perf .p-row .p-n{display:block;padding-right:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.perf .p-row .p-w{position:absolute;top:0;left:218px;width:70px;text-align:right}
+.perf .p-row .p-v{position:absolute;top:0;left:304px;width:50px;text-align:center}
+.perf .p-line{height:1px;margin:0 16.9px 8.8px;background:var(--brown-line-2);transform:scaleY(.5)}
+.sec-band{height:29.6px;background:var(--section-gray);color:var(--section-text);font-size:17px;display:flex;align-items:center;justify-content:center}
+.grade{position:relative;height:61.2px;display:flex;align-items:center;padding-left:17.9px;font-size:16.5px;color:#191919;background:#fff}
+.grade .g-v{position:absolute;left:322px;width:50px;text-align:center;color:#000}
+.grade .g-n{padding-right:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grade .g-w{color:#9a908a;font-size:13px;margin-left:8px}
+.grade::after{content:"";position:absolute;left:16.9px;right:16.9px;bottom:0;height:1px;background:var(--sep-light)}
+
+/* Asesorías */
+.ases-top{height:14px}
+.ases-card{background:#fff;padding:10px 18px;font-size:18.5px}
+.ases-card .r{display:flex;justify-content:space-between;line-height:32px;gap:16px}
+.ases-card .r span:last-child{text-align:right;text-transform:none}
+.ases-gap{height:33px;position:relative}
+.ases-gap::after{content:"";position:absolute;left:0;right:0;top:16px;height:1px;background:#9C928D;transform:scaleY(.5)}
+
+/* Contactos */
+.c-head{height:44.3px;padding:0 21.6px 6px;display:flex;align-items:flex-end;font-size:13.5px;color:#817C79;letter-spacing:.2px;text-transform:uppercase}
+.contact{position:relative;display:flex;align-items:center;width:100%;height:77.6px;background:#fff;text-align:left}
+.contact .ct-photo{position:absolute;left:10.6px;width:52.2px;height:52.2px;border-radius:50%;background:#F0EFEB;display:flex;align-items:center;justify-content:center;color:#383838}
+.contact .ct-photo svg{width:24px;height:24px}
+.contact .ct-photo.prof{left:16px;width:38px;height:46px;border-radius:6px;background:#E9E4DF;color:#8A7E77}
+.contact .ct-photo.prof svg{width:28px;height:28px}
+.contact .ct-text{position:absolute;left:71.2px;right:12px}
+.contact .ct-name{font-size:16px;line-height:19px;text-transform:uppercase;letter-spacing:-.15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.contact .ct-role{font-size:16px;line-height:19px;color:var(--orange);margin-top:1px}
+.contact .hair{left:26px;background:#959595}
+
+/* ---------- Mi Ulima ---------- */
+.mi-sum{height:150px}
+.mi-sum .me-photo{position:absolute;left:18px;top:24px;width:86px;height:100px;border-radius:8px;background:var(--photo-bg);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.mi-sum .me-text{position:absolute;left:122px;right:16px;top:28px}
+.mi-sum .me-name{font-size:19px;font-weight:700;line-height:23px;text-transform:uppercase}
+.mi-sum .me-sub{font-size:15.5px;line-height:21px;margin-top:6px}
+.mi-sum .me-upd{position:absolute;left:0;right:0;bottom:10px;text-align:center;font-size:14px;color:var(--tan)}
+
+/* ---------- Menú lateral ---------- */
+.drawer-overlay{position:absolute;inset:0;background:rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .25s;z-index:60}
+.drawer{position:absolute;top:0;bottom:0;left:0;width:312px;background:var(--cream);z-index:61;transform:translateX(-104%);transition:transform .3s cubic-bezier(.2,.8,.2,1);overflow-y:auto;overscroll-behavior:contain;box-shadow:2px 0 14px rgba(0,0,0,.12)}
+.drawer::-webkit-scrollbar{width:0}
+.app.drawer-open .drawer{transform:none}
+.app.drawer-open .drawer-overlay{opacity:1;pointer-events:auto}
+.d-head{background:var(--orange);color:#fff;padding:calc(var(--sat) + 20px) 20px 26px;text-align:center}
+.d-head .d-inst{font-size:21px;font-weight:600;letter-spacing:1.5px;line-height:1.2;text-transform:uppercase}
+.d-head .d-user{font-size:13px;opacity:.92;margin-top:8px;letter-spacing:.2px}
+.d-item{position:relative;display:flex;align-items:center;width:100%;height:62.3px;color:var(--drawer-text);font-size:16px;text-align:left}
+.d-item .d-ic{position:absolute;left:16.4px;width:31px;height:31px;color:var(--drawer-icon)}
+.d-item .d-ic svg{width:31px;height:31px}
+.d-item .d-lb{position:absolute;left:59px}
+.d-item.on{background:var(--drawer-sel);color:#080000}
+.d-item.on .d-ic{color:#000}
+.d-item.on::after{content:"";position:absolute;right:0;top:0;bottom:0;width:4.3px;background:var(--orange-edge)}
+.d-item:active{background:rgba(0,0,0,.04)}
+.d-foot{height:calc(var(--sab) + 12px)}
+
+/* ---------- Hoja inferior, modal y aviso ---------- */
+.sheet-overlay{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .25s;z-index:70}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:14px 14px 0 0;z-index:71;transform:translateY(102%);transition:transform .3s cubic-bezier(.2,.8,.2,1);max-height:86%;display:flex;flex-direction:column;padding-bottom:var(--sab)}
+.app.sheet-open .sheet{transform:none}
+.app.sheet-open .sheet-overlay{opacity:1;pointer-events:auto}
+.sheet .s-grab{width:38px;height:5px;border-radius:3px;background:#d5d5d8;margin:8px auto 4px;flex:none}
+.sheet .s-head{display:flex;align-items:flex-start;gap:12px;padding:8px 18px 10px}
+.sheet .s-title{font-size:18px;font-weight:700;line-height:1.3;flex:1}
+.sheet .s-close{width:30px;height:30px;border-radius:50%;background:#efeff2;display:flex;align-items:center;justify-content:center;color:#666;flex:none}
+.sheet .s-close svg{width:15px;height:15px}
+.sheet .s-body{overflow-y:auto;padding:0 18px 14px}
+.sheet .s-body p{font-size:15px;line-height:1.5;color:#333;margin:6px 0 12px}
+.modal-wrap{position:absolute;inset:0;z-index:75;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.4);padding:30px;animation:fadeIn .2s ease both}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:300px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.3);text-align:center}
+.modal .m-banner{height:132px;background:linear-gradient(135deg,#FE5117 0%,#F28B4C 60%,#F7B26A 100%);color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:14px 16px;position:relative;overflow:hidden;text-align:left}
+.modal .m-banner .m-kicker{font-size:11px;letter-spacing:.8px;text-transform:uppercase;opacity:.92}
+.modal .m-banner .m-big{font-size:21px;font-weight:800;line-height:1.15;margin-top:3px}
+.modal .m-banner svg.bg{position:absolute;right:-16px;top:-14px;width:130px;height:130px;opacity:.2;color:#fff}
+.modal .m-title{font-size:17px;font-weight:600;padding:18px 16px 0}
+.modal .m-body{padding:6px 16px 16px;font-size:13.5px;line-height:1.45;color:#333}
+.modal .m-actions{display:flex;border-top:1px solid #dcdce0}
+.modal .m-actions button{flex:1;height:44px;font-size:17px;color:#0A7AFF;text-align:center}
+.modal .m-actions button.strong{font-weight:600}
+.modal .m-actions button.danger{color:#FF3B30}
+.modal .m-actions button+button{border-left:1px solid #dcdce0}
+.toast{position:absolute;left:50%;bottom:calc(var(--sab) + 92px);transform:translate(-50%,20px);background:rgba(30,30,32,.94);color:#fff;font-size:14px;line-height:1.35;padding:10px 16px;border-radius:12px;max-width:86%;text-align:center;opacity:0;pointer-events:none;transition:all .25s;z-index:95}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- Bloques reutilizables ---------- */
+.card{background:#fff;border-radius:12px;margin:12px 14px;padding:14px 16px}
+.kv{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid #EDE6E0;font-size:15.5px}
+.kv:last-child{border-bottom:0}
+.kv .k{color:#7d746f}
+.kv .v{color:#000;text-align:right}
+.chip{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.chip.ok{background:#E3F6E8;color:#1E7B3A}
+.chip.warn{background:#FFE8DC;color:#B93C0C}
+.chip.bad{background:#FFE1DE;color:#B42318}
+.chip.gray{background:#EFEFF2;color:#636366}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:50px;border-radius:12px;background:var(--orange);color:#fff;font-size:17px;font-weight:700;width:100%}
+.btn:active{filter:brightness(.93)}
+.btn.outline{background:#fff;color:var(--orange);box-shadow:inset 0 0 0 1.5px var(--orange)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.btn svg{width:18px;height:18px}
+.btns{display:flex;flex-direction:column;gap:10px;padding:14px 17px 18px}
+.list-row{position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:62px;padding:10px 40px 10px 17px;background:#fff;text-align:left}
+.list-row:active{background:#f4f4f4}
+.list-row .lr-ic{width:30px;height:30px;color:var(--icon-gray);flex:none}
+.list-row .lr-main{flex:1;min-width:0}
+.list-row .lr-title{font-size:17px;line-height:1.3}
+.list-row .lr-sub{font-size:14px;color:var(--muted);margin-top:2px;line-height:1.35}
+.list-row .lr-chev{position:absolute;right:17px;top:calc(50% - 8px);width:9px;height:16px;color:var(--chev)}
+.note{font-size:12px;color:#9a8f89;text-align:center;padding:16px 24px 26px;line-height:1.5}
+.pill-row{display:flex;gap:8px;overflow-x:auto;padding:12px 14px 6px;scrollbar-width:none}
+.pill-row::-webkit-scrollbar{display:none}
+.pill{flex:none;height:34px;padding:0 14px;border-radius:17px;font-size:14px;background:#fff;color:#4a3f3a;box-shadow:inset 0 0 0 1px #E0D6CF;display:flex;align-items:center}
+.pill.on{background:var(--orange);color:#fff;box-shadow:none}
+.empty{padding:70px 30px;text-align:center;color:#8f8f94;font-size:15px;line-height:1.5}
+.empty svg{width:56px;height:56px;color:#cfcfd3;margin:0 auto 12px}
+
+/* Promociones */
+.promo-cats{display:flex;justify-content:space-around;padding:2px 6px 10px;background:var(--orange);color:#fff;flex:none}
+.promo-cats .pc{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;width:70px;opacity:.75}
+.promo-cats .pc.on{opacity:1;font-weight:600}
+.promo-cats .pc svg{width:27px;height:27px}
+.promo{position:relative;display:flex;gap:12px;padding:12px 14px 12px 12px;background:#fff;width:100%;text-align:left}
+.promo .logo{width:92px;height:70px;border-radius:6px;flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;letter-spacing:.4px;text-align:center;line-height:1.05;padding:4px}
+.promo .p-name{font-size:14px;font-weight:700;text-transform:uppercase}
+.promo .p-desc{font-size:12.5px;color:#6e6e6e;line-height:1.4;margin-top:3px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Eventos / noticias / entrevistas */
+.ev{position:relative;display:flex;gap:12px;padding:13px 14px 13px 12px;background:#fff;width:100%;text-align:left}
+.ev .thumb{width:108px;height:84px;border-radius:6px;flex:none;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.92)}
+.ev .thumb svg{width:34px;height:34px}
+.ev .thumb .tdate{position:absolute;left:6px;top:6px;background:rgba(255,255,255,.95);color:#000;border-radius:5px;padding:2px 5px;text-align:center;line-height:1.05}
+.ev .thumb .tdate b{display:block;font-size:14px}
+.ev .thumb .tdate small{font-size:9px;text-transform:uppercase;color:var(--orange);font-weight:700}
+.ev .e-title{font-size:15px;font-weight:600;line-height:1.3}
+.ev .e-meta{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.45}
+.hero{height:190px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.9)}
+.hero svg{width:64px;height:64px}
+.article{padding:16px 18px 10px;background:#fff}
+.article h2{font-size:21px;line-height:1.25;margin:0 0 8px}
+.article .meta{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.article p{font-size:16px;line-height:1.55;color:#222;margin:0 0 12px}
+
+/* Agenda */
+.cal{background:#fff;padding:8px 10px 10px}
+.cal .cal-head{display:flex;align-items:center;justify-content:space-between;padding:4px 4px 8px}
+.cal .cal-head b{font-size:17px;text-transform:capitalize;color:var(--brown)}
+.cal .cal-head button{width:36px;height:34px;color:var(--orange);display:flex;align-items:center;justify-content:center}
+.cal .cal-head svg{width:11px;height:19px}
+.cal .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);row-gap:2px;text-align:center}
+.cal .dow{font-size:12px;color:#8a817c;padding:4px 0}
+.cal .day{height:40px;width:40px;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;border-radius:50%}
+.cal .day.out{color:#cbc6c2}
+.cal .day.today{color:var(--orange);font-weight:700}
+.cal .day.sel{background:var(--orange);color:#fff;font-weight:600}
+.cal .day .mk{position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:var(--orange)}
+.cal .day.sel .mk{background:#fff}
+
+/* Asistente en Línea */
+.chat{padding:14px 15px 10px;display:flex;flex-direction:column;gap:17px}
+.msg{max-width:341px;padding:13px 19px 14px;border-radius:22px;font-size:18px;line-height:22.5px;word-wrap:break-word;animation:fadeIn .25s ease both}
+.msg.bot{background:#fff;color:#000;align-self:flex-start;border:1px solid var(--bubble-border);border-bottom-left-radius:3px}
+.msg.me{background:var(--orange);color:#fff;align-self:flex-end;border-bottom-right-radius:3px}
+.msg ul{margin:6px 0 2px;padding-left:20px}
+.msg li{margin:3px 0}
+.msg .m-act{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.msg .m-act button{font-size:14px;font-weight:600;color:var(--orange);background:#FFF0E9;border-radius:15px;padding:7px 11px}
+.typing{display:inline-flex;gap:5px;padding:16px 18px}
+.typing i{width:8px;height:8px;border-radius:50%;background:#b9b9be;animation:blink 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:4px 15px 10px;scrollbar-width:none;flex:none;background:var(--chat-bg)}
+.quick::-webkit-scrollbar{display:none}
+.quick button{flex:none;font-size:14px;color:#3a3a3c;background:#fff;border-radius:16px;padding:8px 13px;border:1px solid var(--bubble-border)}
+.composer{flex:none;position:relative;height:calc(46px + 18px + var(--sab));background:var(--chat-bg)}
+.composer input{position:absolute;left:8.4px;top:14px;width:321px;height:46px;border-radius:23px;border:1px solid #BCBCC1;padding:0 20px;font-size:18px;outline:none;background:#fff;color:#000}
+.composer input::placeholder{color:#C0C0C2}
+.composer .send{position:absolute;left:337.8px;top:16.2px;width:41.7px;height:41.7px;border-radius:50%;background:#8F8E94;color:#fff;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.composer .send.ready{background:var(--orange)}
+.composer .send svg{width:20px;height:20px}
+
+/* Mapa */
+.map-wrap{background:#EEF1EA;position:relative}
+.map-wrap svg{width:100%;height:auto}
+.map-legend{position:absolute;right:8px;bottom:8px;background:rgba(255,255,255,.92);border-radius:8px;padding:5px 8px;font-size:11px;color:#444}
+
+/* Reserva de ambientes */
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:6px 14px 14px}
+.slot{height:46px;border-radius:10px;font-size:15px;background:#fff;box-shadow:inset 0 0 0 1px #E0D6CF;color:#222;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15}
+.slot small{font-size:10.5px;color:#8a817c}
+.slot.busy{background:#EAE5E0;color:#b3aaa4;box-shadow:none;pointer-events:none;text-decoration:line-through}
+.slot.on{background:var(--orange);color:#fff;box-shadow:none}
+.slot.on small{color:#fff}
+.slot.mine{background:#E3F6E8;box-shadow:inset 0 0 0 1px #9AD8AA;color:#1E7B3A;pointer-events:none}
+.slot.mine small{color:#1E7B3A}
+.block-title{font-size:13.5px;color:#817C79;text-transform:uppercase;letter-spacing:.2px;padding:16px 18px 6px}
+
+/* Encuesta */
+.q{padding:15px 17px;background:#fff;position:relative}
+.q .q-text{font-size:16.5px;line-height:1.4;margin-bottom:11px}
+.likert{display:flex;gap:8px}
+.likert button{flex:1;height:40px;border-radius:10px;box-shadow:inset 0 0 0 1px #E0D6CF;font-size:16px;font-weight:600;color:#4a3f3a;background:#fff;text-align:center}
+.likert button.on{background:var(--orange);color:#fff;box-shadow:none}
+.likert-scale{display:flex;justify-content:space-between;font-size:11px;color:#8a817c;margin-top:5px}
+.ta{width:100%;min-height:88px;border:1px solid #E0D6CF;border-radius:10px;padding:10px 12px;font-size:16px;resize:vertical;outline:none;background:#fff}
+.ta:focus{border-color:#FFB79A}
+.search{margin:10px 14px;height:40px;border-radius:10px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 12px;color:#8e8e93;box-shadow:inset 0 0 0 1px #E0D6CF}
+.search svg{width:18px;height:18px}
+.search input{flex:1;border:0;background:transparent;outline:none;font-size:16px;color:#000}
+
+/* Ayuda (acordeón) */
+.faq{background:#fff;position:relative}
+.faq summary{list-style:none;cursor:pointer;padding:17px 44px 17px 17px;font-size:17px;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:20px;top:calc(50% - 6px);width:8px;height:8px;border-right:2px solid var(--chev);border-bottom:2px solid var(--chev);transform:rotate(45deg);transition:transform .2s}
+.faq[open] summary::after{transform:rotate(-135deg);top:calc(50% - 2px)}
+.faq .faq-a{padding:0 17px 16px;font-size:15px;line-height:1.5;color:#4a4a4f}
+
+/* Membresías */
+.member{margin:14px 16px;border-radius:14px;padding:16px 18px;color:#fff;position:relative;overflow:hidden;min-height:118px}
+.member .mb-k{font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.9}
+.member .mb-t{font-size:20px;font-weight:700;margin-top:4px;line-height:1.2}
+.member .mb-s{font-size:13px;opacity:.92;margin-top:10px}
+.member svg.bg{position:absolute;right:-12px;bottom:-14px;width:110px;height:110px;opacity:.18}
+
+/* ---------- Splash, login y carné ---------- */
+.splash{position:absolute;inset:0;background:var(--orange);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:16px}
+.splash .s-name{font-size:25px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;line-height:1.25}
+.spinner{width:28px;height:28px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.login-top{background:var(--orange);color:#fff;padding:calc(var(--sat) + 44px) 26px 66px;text-align:center}
+.login-top .l-inst{font-size:22px;font-weight:600;letter-spacing:2px;text-transform:uppercase;line-height:1.25}
+.login-top .l-sub{font-size:15px;opacity:.92;margin-top:8px}
+.login-card{background:#fff;margin:-40px 18px 0;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.12);padding:18px 18px 8px;position:relative}
+.demo-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#9A3412;background:#FFEDD5;border-radius:20px;padding:4px 10px;margin-bottom:14px}
+.demo-chip svg{width:14px;height:14px}
+.fake-field{margin-bottom:14px}
+.fake-field label{display:block;font-size:13px;color:#7d746f;margin-bottom:6px}
+.fake-field .ff{height:48px;border-radius:10px;background:#F6F3F0;border:1px solid #E6DED8;display:flex;align-items:center;gap:10px;padding:0 13px;color:#6b625d;font-size:16px;user-select:none}
+.fake-field .ff svg{width:18px;height:18px;color:#a39a95}
+.login-links{display:flex;justify-content:center;padding:12px 0 6px}
+.login-links button{font-size:14.5px;color:var(--orange);font-weight:500}
+.login-foot{font-size:12px;color:#9a9aa0;text-align:center;padding:18px 26px calc(var(--sab) + 10px);line-height:1.5}
+.carne{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;padding-top:var(--sat)}
+.carne .ca-close{position:absolute;left:12px;top:calc(var(--sat) + 4px);width:36px;height:36px;border-radius:50%;background:#f1f1f3;color:#555;display:flex;align-items:center;justify-content:center;z-index:3}
+.carne .ca-close svg{width:16px;height:16px}
+.carne .ca-inst{margin-top:24px;font-size:13px;letter-spacing:2.2px;color:#3b3b3b;text-align:center;line-height:1.5;font-weight:500}
+.carne .ca-band{margin-top:22px;width:100%;background:var(--lime);color:var(--carne-orange);text-align:center;padding:14px 10px 12px;line-height:1.22}
+.carne .ca-band .n1,.carne .ca-band .n2{font-size:22px;text-transform:uppercase}
+.carne .ca-band .code{font-size:30px;margin-top:4px;letter-spacing:.5px}
+.carne .ca-photo{margin-top:30px;width:226px;height:262px;background:var(--photo-bg);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.carne .ca-line{margin-top:18px;width:100%;height:10px;background:var(--carne-line)}
+.carne .ca-role{margin-top:14px;color:var(--carne-orange);font-size:15px;letter-spacing:.5px}
+.carne .ca-bar{margin-top:10px}
+.carne .ca-water{position:absolute;left:-40px;right:-40px;top:50%;transform:rotate(-28deg);text-align:center;font-size:28px;font-weight:800;letter-spacing:3px;color:rgba(200,30,30,.17);pointer-events:none;z-index:2;white-space:nowrap}
+.carne .ca-legal{position:absolute;bottom:calc(var(--sab) + 6px);left:0;right:0;text-align:center;font-size:11px;color:#a2a2a7}
+
+
+/* ---------- Panel de configuración (oculto) ---------- */
+.ver-tap{display:block;width:100%;text-align:center;font-size:12px;color:#b2a8a2;padding:26px 0 calc(var(--sab) + 18px);user-select:none;-webkit-user-select:none}
+.pw-input{display:block;width:100%;height:48px;margin-top:14px;border:1px solid #d9d0ca;border-radius:10px;padding:0 14px;font-size:22px;letter-spacing:6px;text-align:center;outline:none;background:#fff}
+.pw-input:focus{border-color:var(--orange)}
+.pw-err{min-height:18px;color:#D92D20;font-size:13px;margin-top:6px}
+.shake{animation:shake .38s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.adm-intro{padding:14px 18px 2px;font-size:14.5px;line-height:1.45;color:#4a3f3a}
+.adm-help{padding:12px 18px 2px;font-size:13.5px;line-height:1.45;color:#6b615c}
+.adm-prev{background:#fff;border-bottom:1px solid #E6DED8;pointer-events:none}
+.adm-tabs{display:flex;background:#fff;border-bottom:1px solid #E6DED8;position:sticky;top:0;z-index:2}
+.adm-tabs button{flex:1;height:44px;font-size:14.5px;color:#7d746f;position:relative;text-align:center}
+.adm-tabs button.on{color:var(--orange);font-weight:600}
+.adm-tabs button.on::after{content:"";position:absolute;left:14%;right:14%;bottom:-1px;height:3px;border-radius:2px;background:var(--orange)}
+.f-card{background:#fff;margin:10px 14px;border-radius:12px;padding:12px 14px 4px}
+.f-row{display:flex;gap:10px;align-items:flex-end}
+.f{flex:1;min-width:0;margin-bottom:10px}
+.f.w-s{flex:0 0 88px}
+.f.w-m{flex:0 0 110px}
+.f label{display:block;font-size:12.5px;color:#7d746f;margin-bottom:5px}
+.f input,.f select{display:block;width:100%;height:44px;border:1px solid #E0D6CF;border-radius:10px;padding:0 11px;font-size:16px;background:#fff;color:#000;outline:none;-webkit-appearance:none;appearance:none;font-family:inherit}
+.f select{padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%237d746f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.f input:focus,.f select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(254,81,23,.12)}
+.icon-btn{width:44px;height:44px;border-radius:10px;background:#FDEDE7;color:#C2410C;display:flex;align-items:center;justify-content:center;flex:none;margin-bottom:10px}
+.icon-btn svg{width:18px;height:18px}
+.swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:2px 2px 0}
+.sw{aspect-ratio:1/1;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.sw.on{box-shadow:0 0 0 3px #fff,0 0 0 5px #222}
+.color-prev{width:44px;height:44px;border-radius:10px;flex:none;margin-bottom:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1)}
+.res{background:#fff;margin:12px 14px;border-radius:12px;padding:12px 14px}
+.res .r-big{display:flex;justify-content:space-between;align-items:baseline;font-size:16px;padding:4px 0}
+.res .r-big b{font-size:20px;color:var(--brown)}
+.r-f{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#5b524d;background:#F7F3F0;border-radius:8px;padding:8px 10px;margin-top:6px;line-height:1.55;word-break:break-word}
+.f-warn{color:#B42318;font-size:13px;line-height:1.4;margin:0 0 8px}
+.f-warn:empty{display:none}
+.sum-line{padding:2px 18px 0;font-size:13.5px}
+.sum-line .ok{color:#1E7B3A}
+.sum-line .bad{color:#B42318;font-weight:600}
+.opt-t{font-size:13.5px;color:#4a3f3a;margin-top:4px}
+.btn.small{width:auto;height:44px;padding:0 16px;font-size:15px;flex:none;margin-bottom:10px}
+.btn.danger-o{color:#D92D20;box-shadow:inset 0 0 0 1.5px #D92D20}
+
+/* ---------- En un celular real: sin marco ---------- */
+@media (max-width:500px){
+  :root{--sat:max(env(safe-area-inset-top,0px),var(--sat-native,0px));--sab:max(env(safe-area-inset-bottom,0px),var(--sab-native,0px))}
+  body{background:#fff}
+  .stage{position:fixed;inset:0;transform:none;display:block}
+  .device{width:100%;height:100%;border-radius:0;padding:0;box-shadow:none;background:#fff}
+  .device::before,.device::after{display:none}
+  .screen{width:100%;height:100%;border-radius:0}
+  .notch,.caption,.statusbar,.home-ind{display:none}
+  .course .c-pct{left:auto;right:102px}
+  .course .c-donut{left:auto;right:38px}
+  .course .c-chev{left:auto;right:19px}
+  .course .c-text{right:136px}
+  .c-hidden{left:auto;right:52px}
+  .menu-row .m-chev{left:auto;right:17px}
+  .grade .g-v,.perf .p-row .p-v{left:auto;right:18px}
+  .perf .p-row .p-w{left:auto;right:84px}
+  .composer input{width:auto;right:61px}
+  .composer .send{left:auto;right:10px}
+  .att .a-donut{left:auto;right:6px}
+}
+
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="device">
+    <div class="screen">
+      <div class="app" id="app">
+        <div class="views" id="views"></div>
+        <div class="drawer-overlay" id="drawerOverlay"></div>
+        <nav class="drawer" id="drawer" aria-label="Menú principal"></nav>
+        <div class="sheet-overlay" id="sheetOverlay"></div>
+        <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+          <div class="s-grab"></div>
+          <div class="s-head"><div class="s-title" id="sheetTitle"></div><button class="s-close" id="sheetClose" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+          <div class="s-body" id="sheetBody"></div>
+        </div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
+      <div class="statusbar" id="statusbar" aria-hidden="true">
+        <span class="sb-time" id="sbTime">9:41</span>
+        <span class="sb-right">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".35"/></svg>
+          <span>4G</span>
+          <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x=".5" y=".5" width="23" height="12" rx="3.6" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="9" rx="2.2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.7-1.4-2z" fill="currentColor" opacity=".45"/></svg>
+        </span>
+      </div>
+      <div class="notch"></div>
+      <div class="home-ind" id="homeInd"></div>
+    </div>
+  </div>
+  <div class="caption"><b>Réplica académica de la Ulima App</b> · no oficial · datos de ejemplo</div>
+</div>
+<script>
+/* Íconos genéricos dibujados para la réplica (no son íconos oficiales). */
+(function(){
+  const I = {
+    /* Barra superior */
+    burger:{vb:'0 0 24 15',fill:1,d:'<rect x="0" y="0" width="24" height="3" rx="1.5"/><rect x="0" y="6" width="24" height="3" rx="1.5"/><rect x="0" y="12" width="24" height="3" rx="1.5"/>'},
+    back:{vb:'0 0 12 20',sw:2.6,d:'<path d="M10.4 1.6L2 10l8.4 8.4"/>'},
+    dateL:{vb:'0 0 12 20',sw:3.6,d:'<path d="M10 2L2.2 10 10 18"/>'},
+    dateR:{vb:'0 0 12 20',sw:3.6,d:'<path d="M2 2l7.8 8L2 18"/>'},
+    eye:{vb:'0 0 31 20',sw:2.1,d:'<path d="M1.6 10C5 4.2 10 1.4 15.5 1.4S26 4.2 29.4 10C26 15.8 21 18.6 15.5 18.6S5 15.8 1.6 10z"/><circle cx="15.5" cy="10" r="4.6"/><circle cx="15.5" cy="10" r="1.5" fill="currentColor"/>'},
+    eyeOff:{vb:'0 0 31 20',sw:2.1,d:'<path d="M1.6 10C5 4.2 10 1.4 15.5 1.4S26 4.2 29.4 10C26 15.8 21 18.6 15.5 18.6S5 15.8 1.6 10z"/><circle cx="15.5" cy="10" r="4.6"/><path d="M4 18.5L27 1.5"/>'},
+    mail:{vb:'0 0 36 26',sw:2.1,d:'<rect x="1.3" y="1.3" width="33.4" height="23.4" rx="3"/><path d="M2 2.5l16 12.2L34 2.5M2 23.5l11.6-10.6M34 23.5L22.4 12.9"/>'},
+    sync:{vb:'0 0 27 24',sw:2.1,d:'<path d="M23.2 9.2A10 10 0 0 0 4.6 7.4"/><path d="M3.8 14.8a10 10 0 0 0 18.6 1.8"/><path d="M19.6 9.4l3.8.2.6-3.9"/><path d="M7.4 14.6l-3.8-.2-.6 3.9"/>'},
+    /* Barra inferior */
+    calClock:{vb:'0 0 26 26',sw:1.7,d:'<path d="M11.5 21.5H4.2a2 2 0 0 1-2-2V6.6a2 2 0 0 1 2-2h14.6a2 2 0 0 1 2 2v4.4"/><path d="M2.2 9.6h18.6M7 2.4v4.4M16 2.4v4.4"/><path d="M5.6 13.2h2.6M10 13.2h2.6M5.6 17h2.6"/><circle cx="18.4" cy="18.6" r="5.6"/><path d="M18.4 15.7v3.1l2 1.3"/>'},
+    board:{vb:'0 0 26 26',sw:1.7,d:'<path d="M1.6 3h22.8"/><path d="M3.3 3v13.4h19.4V3"/><path d="M13 16.4v2.6M13 19l-3.6 4.6M13 19l3.6 4.6"/><circle cx="12.3" cy="9.6" r="3.6"/><path d="M12.3 6v3.6h3.6"/>'},
+    user:{vb:'0 0 26 26',sw:1.7,d:'<circle cx="13" cy="7.6" r="5.2"/><path d="M2.6 23.6c.4-5.2 4.8-8.8 10.4-8.8s10 3.6 10.4 8.8z"/>'},
+    /* Listas */
+    chevThin:{vb:'0 0 7 11',sw:1.4,d:'<path d="M1.2 1l4.6 4.5-4.6 4.5"/>'},
+    chev:{vb:'0 0 10 18',sw:1.9,d:'<path d="M1.5 1.5L8.6 9l-7.1 7.5"/>'},
+    award:{vb:'0 0 22 22',sw:1.4,d:'<path d="M11 1.6l1.6 1.2 2-.2.8 1.8 1.8.8-.2 2 1.2 1.6-1.2 1.6.2 2-1.8.8-.8 1.8-2-.2L11 16l-1.6-1.2-2 .2-.8-1.8-1.8-.8.2-2L3.8 8.8 5 7.2l-.2-2 1.8-.8.8-1.8 2 .2z"/><path d="M11 5.8l1 2 2.2.3-1.6 1.5.4 2.2-2-1-2 1 .4-2.2-1.6-1.5 2.2-.3z"/><path d="M6.4 15.2L4.6 20.4l2.6-.9 1.7 2 1.4-4.7M15.6 15.2l1.8 5.2-2.6-.9-1.7 2-1.4-4.7"/>'},
+    advisor:{vb:'0 0 22 22',sw:1.4,d:'<circle cx="11" cy="6" r="4.4"/><path d="M2.4 20.6c.3-4.6 3.9-7.4 8.6-7.4s8.3 2.8 8.6 7.4z"/><path d="M11 13.4v3.4M9.6 18.4h2.8"/>'},
+    contacts:{vb:'0 0 22 22',sw:1.4,d:'<circle cx="8" cy="6.2" r="3.8"/><path d="M1.2 17.6c.3-3.8 3.1-6.2 6.8-6.2 1.5 0 2.8.4 3.9 1.1"/><circle cx="15.2" cy="12.4" r="3.2"/><path d="M9.6 21c.3-3 2.6-5 5.6-5s5.3 2 5.6 5z"/>'},
+    check:{vb:'0 0 16 16',sw:1.7,d:'<path d="M1.2 8.6l4.4 5.2L14.8 1.6"/>'},
+    xmark:{vb:'0 0 16 16',sw:1.7,d:'<path d="M1.6 1.6l12.8 12.8M14.4 1.6L1.6 14.4"/>'},
+    equals:{vb:'0 0 16 16',sw:1.8,d:'<path d="M1.2 5.4h13.6M1.2 10.6h13.6"/>'},
+    person:{vb:'0 0 24 24',fill:1,d:'<circle cx="12" cy="7.4" r="5.4"/><path d="M1.4 23.4c0-6 4.6-9.6 10.6-9.6s10.6 3.6 10.6 9.6z"/>'},
+    /* Menú lateral */
+    intranet:{vb:'0 0 31 31',sw:1.6,d:'<path d="M2.5 12.5L15.5 4l13 8.5"/><path d="M5.5 12.5v13h20v-13"/><path d="M12.5 25.5v-7h6v7"/><path d="M2.5 27h26"/>'},
+    asistente:{vb:'0 0 31 31',sw:1.6,d:'<path d="M27.5 14.5c0 6-5.4 10.4-12 10.4-1.6 0-3.1-.3-4.5-.7L5 26.8l1.7-4.9c-2.1-1.9-3.3-4.5-3.3-7.4 0-6 5.4-10.4 12-10.4s12.1 4.4 12.1 10.4z"/><path d="M15.5 9.6l1.3 3.1 3.2 1.3-3.2 1.3-1.3 3.2-1.3-3.2-3.2-1.3 3.2-1.3z"/>'},
+    cafeteria:{vb:'0 0 31 31',sw:1.6,d:'<path d="M5 22.5a10.5 10.5 0 0 1 21 0z"/><path d="M2.5 25.5h26"/><path d="M15.5 12v-1.5"/><path d="M10 3c-1 1 1 2 0 3s1 2 0 3M15.5 2.5c-1 1 1 2 0 3s1 2 0 3M21 3c-1 1 1 2 0 3s1 2 0 3"/>'},
+    eventos:{vb:'0 0 31 31',sw:1.6,d:'<path d="M2.5 8h26v4a3.5 3.5 0 0 0 0 7v4h-26v-4a3.5 3.5 0 0 0 0-7z"/><path d="M15.5 11.6l1.2 2.5 2.7.4-2 1.9.5 2.7-2.4-1.3-2.4 1.3.5-2.7-2-1.9 2.7-.4z"/>'},
+    promos:{vb:'0 0 31 31',sw:1.6,d:'<path d="M27.6 17.2L17.2 27.6a2.2 2.2 0 0 1-3.1 0L3.3 16.8V3.3h13.5l10.8 10.8a2.2 2.2 0 0 1 0 3.1z"/><circle cx="8.6" cy="8.6" r="1.8"/><circle cx="13.6" cy="14.4" r="1.6"/><circle cx="18.6" cy="19.4" r="1.6"/><path d="M19.6 13.4l-6.8 7"/>'},
+    mapa:{vb:'0 0 31 31',sw:1.6,d:'<path d="M2.5 6.5l8.5-3 9 3 8.5-3v21l-8.5 3-9-3-8.5 3z"/><path d="M6.5 20c1.5-1 2.5-3 4.5-3s2.5 2 4.5 1.5M17.5 15.5c1-1.5 2.5-2.5 4-2.5" stroke-dasharray="1.6 2.4"/><path d="M21.6 8.4l3.2 3.2M24.8 8.4l-3.2 3.2"/>'},
+    redes:{vb:'0 0 31 31',sw:1.6,d:'<circle cx="10.5" cy="8.5" r="5"/><path d="M2 24c.4-5.4 3.9-8.6 8.5-8.6 1.9 0 3.6.5 5 1.5"/><circle cx="20.5" cy="17" r="4.2"/><path d="M13.2 28.5c.4-4 3.4-6.6 7.3-6.6s6.9 2.6 7.3 6.6z"/>'},
+    noticias:{vb:'0 0 31 31',sw:1.6,d:'<path d="M3.5 3.5h20v24h-17a3 3 0 0 1-3-3z"/><path d="M23.5 9.5h4v15a3 3 0 0 1-3 3"/><rect x="7.5" y="8" width="6.5" height="6" fill="currentColor"/><path d="M16.5 8.5h3.5M16.5 13h3.5M7.5 18h12.5M7.5 22.5h12.5"/>'},
+    repositorio:{vb:'0 0 31 31',sw:1.6,d:'<rect x="2.5" y="4" width="6" height="23" rx=".6"/><rect x="9.5" y="7" width="6" height="20" rx=".6"/><path d="M17.2 7.6l5.6-1.4 5 19.6-5.6 1.4z"/><path d="M2.5 9h6M2.5 22h6M9.5 11.5h6M9.5 22h6"/>'},
+    entrevistas:{vb:'0 0 31 31',sw:1.6,d:'<circle cx="21" cy="8.5" r="5.5"/><path d="M17.2 12.4L6.8 22.6a2 2 0 0 0 2.8 2.8L19.8 15"/><path d="M8 24.3c-2 1.8-4.6 2-5.5 1.2s.2-2.8 2-3.6c2.4-1 5-.4 6.4 1.4"/>'},
+    agenda:{vb:'0 0 31 31',sw:1.6,d:'<rect x="2.5" y="5" width="26" height="23" rx="3"/><path d="M2.5 11h26M9 2.5v5M22 2.5v5"/><path d="M7 15.5h4.4v3.2H7zM13.3 15.5h4.4v3.2h-4.4zM19.6 15.5H24v3.2h-4.4zM7 21h4.4v3.2H7zM13.3 21h4.4v3.2h-4.4z" fill="currentColor"/>'},
+    ayuda:{vb:'0 0 31 31',sw:1.6,d:'<path d="M15.5 3L29 27.5H2z"/><path d="M15.5 11.5v8"/><circle cx="15.5" cy="23" r="1" fill="currentColor"/>'},
+    membresias:{vb:'0 0 31 31',sw:1.6,d:'<rect x="2.5" y="6" width="26" height="19" rx="2.5"/><circle cx="11" cy="15.5" r="4"/><path d="M11 11.5v8M7 15.5h8M8.2 12.7l5.6 5.6M13.8 12.7l-5.6 5.6"/><circle cx="19.5" cy="21" r=".6" fill="currentColor"/><circle cx="22.5" cy="21" r=".6" fill="currentColor"/><circle cx="25.5" cy="21" r=".6" fill="currentColor"/>'},
+    acerca:{vb:'0 0 31 31',sw:1.6,d:'<circle cx="15.5" cy="15.5" r="13"/><path d="M15.5 13.5v9"/><circle cx="15.5" cy="9.3" r="1.1" fill="currentColor"/>'},
+    /* Varios (24 × 24) */
+    send:{d:'<path d="M21.5 2.5L10.6 13.4M21.5 2.5L14.6 21.5l-4-8.1-8.1-4z" fill="currentColor"/>' ,sw:1.2},
+    search:{d:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'},
+    pin:{d:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'},
+    clock:{d:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>'},
+    info:{d:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/>'},
+    x:{d:'<path d="M6 6l12 12M18 6L6 18"/>'},
+    plus:{d:'<path d="M12 5v14M5 12h14"/>'},
+    leaf:{d:'<path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19c3-4 6-7 10-9"/>'},
+    idCard:{vb:'0 0 31 31',sw:1.6,d:'<rect x="2.5" y="6" width="26" height="19" rx="2.5"/><circle cx="10.5" cy="14" r="3"/><path d="M6 21.5c.8-2.3 2.5-3.5 4.5-3.5s3.7 1.2 4.5 3.5M18.5 12.5h6M18.5 16.5h5M18.5 20.5h3"/>'},
+    exam:{vb:'0 0 31 31',sw:1.6,d:'<path d="M18.5 3H7.5a2.5 2.5 0 0 0-2.5 2.5v20A2.5 2.5 0 0 0 7.5 28h16a2.5 2.5 0 0 0 2.5-2.5V10.5z"/><path d="M18.5 3v7.5H26M10 18.5l3 3 6.5-7"/>'},
+    pagos:{vb:'0 0 31 31',sw:1.6,d:'<rect x="2.5" y="7" width="26" height="18" rx="2.5"/><path d="M2.5 12.5h26M7 20h6"/>'},
+    reserva:{vb:'0 0 31 31',sw:1.6,d:'<path d="M6.5 27.5V5a1.5 1.5 0 0 1 1.5-1.5h15A1.5 1.5 0 0 1 24.5 5v22.5M3 27.5h25"/><circle cx="19.5" cy="15.5" r="1" fill="currentColor"/>'},
+    encuesta:{vb:'0 0 31 31',sw:1.6,d:'<rect x="5.5" y="5" width="20" height="23" rx="2.5"/><path d="M11 5V3h9v2M10 12l1.6 1.6 3-3.2M17.5 12h3.5M10 19l1.6 1.6 3-3.2M17.5 19h3.5"/>'},
+    logout:{vb:'0 0 31 31',sw:1.6,d:'<path d="M12 27.5H6a2.5 2.5 0 0 1-2.5-2.5V6A2.5 2.5 0 0 1 6 3.5h6M20.5 22l6.5-6.5-6.5-6.5M27 15.5H11.5"/>'},
+    alert:{d:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/>'},
+    lock:{d:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'},
+    music:{d:'<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>'},
+    sport:{d:'<circle cx="12" cy="12" r="9"/><path d="M12 3a14 14 0 0 1 0 18M3 12h18M5.6 5.6c3.5 2.6 9.3 2.6 12.8 0M5.6 18.4c3.5-2.6 9.3-2.6 12.8 0"/>'},
+    rocket:{d:'<path d="M5 15c-1.5 1.5-2 4.5-2 6 1.5 0 4.5-.5 6-2"/><path d="M9 15l-3-3c1.5-5 5.5-9 13-9.5C18.5 10 14.5 14 9.5 15.5z"/><circle cx="14.5" cy="9.5" r="1.5"/>'},
+    bulb:{d:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>'},
+    heart:{d:'<path d="M12 20.5s-8-4.6-8-10.4A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 8 3.1c0 5.8-8 10.4-8 10.4z"/>'},
+    glass:{d:'<path d="M5 3.5h14l-7 8.5zM12 12v8M8 20.5h8"/>'},
+    cap:{d:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6"/>'},
+    ticket:{d:'<path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z"/><path d="M14 6.5v11" stroke-dasharray="2 2.2"/>'},
+    tag:{d:'<path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>'},
+    briefcase:{d:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12.5h18"/>'},
+    globe:{d:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/>'},
+    camera:{d:'<path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/>'},
+    play:{d:'<circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5-5.5 3.5z"/>'},
+    chat:{d:'<path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.5-4.7A8.5 8.5 0 1 1 21 11.5z"/>'},
+    star:{d:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>'},
+    mic:{d:'<rect x="9" y="2.5" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5M8.5 21.5h7"/>'},
+    news:{d:'<path d="M4 4h13v16H6a2 2 0 0 1-2-2z"/><path d="M17 8h3v10a2 2 0 0 1-2 2M8 8h5M8 12h5M8 16h3"/>'},
+    book:{d:'<path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2.5zM4 19.5A2 2 0 0 0 6 21h14"/><path d="M8.5 7.5h7M8.5 11h5"/>'},
+    books:{d:'<rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M15.3 5.5l3.8-1 3 14.6-3.8 1z"/>'},
+    grid:{d:'<rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1"/>'},
+    food:{d:'<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 1.5-3 4-3 7h3v11"/>'},
+    location:{d:'<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="7"/>'},
+    calendar:{d:'<rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/>'},
+    wifi:{vb:'0 0 17 12',fill:1,d:'<path d="M8.5 2.6c2.4 0 4.6.9 6.3 2.5l1.2-1.3A10.6 10.6 0 0 0 8.5.8 10.6 10.6 0 0 0 1 3.8l1.2 1.3a8.9 8.9 0 0 1 6.3-2.5z"/><path d="M8.5 6.2c1.4 0 2.7.5 3.7 1.4l1.2-1.3a7.2 7.2 0 0 0-9.8 0l1.2 1.3c1-.9 2.3-1.4 3.7-1.4z"/><path d="M8.5 9.6c.5 0 1 .2 1.3.5L8.5 11.5 7.2 10.1c.3-.3.8-.5 1.3-.5z"/>'},
+  };
+  window.ICONS = I;
+  window.ic = function(name, cls){
+    const o = I[name] || I.info;
+    const vb = o.vb || '0 0 24 24';
+    const c = cls ? ' class="'+cls+'"' : '';
+    if (o.fill) return '<svg viewBox="'+vb+'" fill="currentColor" aria-hidden="true"'+c+'>'+o.d+'</svg>';
+    return '<svg viewBox="'+vb+'" fill="none" stroke="currentColor" stroke-width="'+(o.sw||2)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"'+c+'>'+o.d+'</svg>';
+  };
+  /* Silueta genérica para la foto */
+  window.silhouette = function(w, h, color){
+    color = color || '#fff';
+    return '<svg viewBox="0 0 100 116" width="'+w+'" height="'+h+'" aria-hidden="true"><ellipse cx="50" cy="44" rx="22" ry="27" fill="'+color+'"/><path d="M8 116c2-24 20-36 42-36s40 12 42 36z" fill="'+color+'"/></svg>';
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   DATOS DE EJEMPLO de la réplica.
+   - Cursos, secciones, porcentajes y algunas notas copian lo que se ve en las
+     capturas de referencia para que la comparación sea fiel.
+   - Personas (alumna, docentes, compañeros), pagos, eventos y demás son
+     INVENTADOS. Nada se conecta con los sistemas de la Universidad de Lima.
+   Para cambiar los datos basta con editar este archivo.
+   ========================================================================== */
+(function(){
+  const d = (y, m, day) => new Date(y, m - 1, day);
+
+  const ALUMNO = {
+    nombres: 'Lucía Andrea',
+    apellidos: 'García Torres',
+    codigo: '20231234',
+    carrera: 'Ingeniería Civil',
+    ciclo: '4.° ciclo',
+    periodo: '2026-2',
+  };
+
+  const ALUMNOS = [
+    'ALVARADO RÍOS, DIEGO ANDRÉS', 'BARRIENTOS CUBA, MARÍA FERNANDA', 'CAMPOS SILVA, JOSÉ MIGUEL',
+    'CASTRO LÓPEZ, VALERIA', 'DÍAZ HUAMÁN, SEBASTIÁN', 'FLORES MENDOZA, RODRIGO', 'GARCÍA TORRES, LUCÍA ANDREA',
+    'GUTIÉRREZ PAZ, LUCÍA', 'LOZANO CÁRDENAS, ANDREA SOFÍA', 'MORALES TELLO, NICOLÁS', 'ORTIZ SALAZAR, FERNANDA',
+    'PALACIOS RUIZ, GABRIEL', 'QUISPE TORRES, DANIELA', 'RIVAS PONCE, ALEJANDRO', 'SÁNCHEZ VILLA, MARIANA',
+    'VARGAS LUNA, ADRIÁN', 'ZAPATA REYES, XIMENA',
+  ];
+
+  /* Cursos. horas: asistidas / faltas / total del ciclo (el % mostrado = faltas / total).
+     slots: horario semanal (dow 1 = lunes ... 6 = sábado). */
+  const CURSOS = [
+    {
+      id: 'calc', nombre: 'CÁLCULO II', seccion: '302', color: '#3FCC4C',
+      horas: { asist: 52, faltas: 8, total: 80 },
+      slots: [
+        { dow: 1, ini: '07:00', fin: '09:00', aula: 'I2-104' },
+        { dow: 3, ini: '07:00', fin: '09:00', aula: 'I2-104' },
+        { dow: 5, ini: '08:00', fin: '09:00', aula: 'I2-104' },
+      ],
+      notas: {
+        componentes: [ { nombre: 'Evaluación Continua', peso: 100, tipo: 'continua', nota: null } ],
+        evaluaciones: [
+          { nombre: 'Ejercicio individual 1', peso: 15, nota: 18 },
+          { nombre: 'Examen escrito 1', peso: 25, nota: 17 },
+          { nombre: 'Ejercicio individual 2', peso: 15, nota: 20 },
+          { nombre: 'Examen escrito 2', peso: 25, nota: null },
+          { nombre: 'Informe 1', peso: 20, nota: null },
+        ],
+      },
+      asesorias: [
+        ['LUNES', '17:00', '18:00', 'I2-102 (1)'], ['MARTES', '16:00', '17:00', 'I2-102 (1)'],
+        ['MIÉRCOLES', '17:00', '18:00', 'Torre O1 - Piso 11'], ['VIERNES', '15:00', '16:00', 'Torre O1 - Piso 11'],
+        ['LUNES', '14:00', '15:00', 'Torre O1 - Piso 11'] ],
+      docente: 'MEDINA SALAZAR, JORGE LUIS',
+    },
+    {
+      id: 'fis', nombre: 'FÍSICA I', seccion: '309', color: '#F3BB02',
+      horas: { asist: 40, faltas: 16, total: 80 },
+      slots: [
+        { dow: 2, ini: '07:00', fin: '10:00', aula: 'E1-201' },
+        { dow: 5, ini: '10:00', fin: '12:00', aula: 'LAB. FÍSICA 2' },
+      ],
+      notas: {
+        componentes: [ { nombre: 'Evaluación Continua', peso: 100, tipo: 'continua', nota: null } ],
+        evaluaciones: [
+          { nombre: 'Laboratorio 1', peso: 15, nota: 15 },
+          { nombre: 'Práctica calificada 1', peso: 25, nota: 12 },
+          { nombre: 'Laboratorio 2', peso: 15, nota: 16 },
+          { nombre: 'Práctica calificada 2', peso: 25, nota: null },
+          { nombre: 'Informe de laboratorio', peso: 20, nota: null },
+        ],
+      },
+      asesorias: [ ['MARTES', '10:00', '11:00', 'E1-110'], ['JUEVES', '15:00', '16:00', 'Torre O1 - Piso 9'] ],
+      docente: 'QUISPE ROJAS, ANA MARÍA',
+    },
+    {
+      id: 'suelos', nombre: 'MEC.DE SUELOS I', seccion: '501', color: '#408DDD',
+      horas: { asist: 35, faltas: 10, total: 64 },
+      slots: [
+        { dow: 1, ini: '14:00', fin: '16:00', aula: 'VIRTUAL 21' },
+        { dow: 3, ini: '14:00', fin: '16:00', aula: 'I1-306' },
+      ],
+      notas: {
+        componentes: [ { nombre: 'Evaluación Continua', peso: 100, tipo: 'continua', nota: null } ],
+        evaluaciones: [
+          { nombre: 'Ensayo de laboratorio 1', peso: 15, nota: 14 },
+          { nombre: 'Examen escrito 1', peso: 25, nota: 13 },
+          { nombre: 'Ensayo de laboratorio 2', peso: 15, nota: 15 },
+          { nombre: 'Examen escrito 2', peso: 25, nota: null },
+          { nombre: 'Trabajo de campo', peso: 20, nota: null },
+        ],
+      },
+      asesorias: [ ['MIÉRCOLES', '16:00', '17:00', 'I1-301'], ['VIERNES', '12:00', '13:00', 'Torre O1 - Piso 11'] ],
+      docente: 'PAREDES CHUMPITAZ, CARLOS ALBERTO',
+    },
+    {
+      id: 'bim', nombre: 'MOD.INF.EDIFI.II', seccion: '502', color: '#EC513B',
+      horas: { asist: 42, faltas: 4, total: 80 },
+      slots: [
+        { dow: 2, ini: '15:00', fin: '17:00', aula: 'LAB. CÓMPUTO 4' },
+        { dow: 4, ini: '10:00', fin: '13:00', aula: 'VIRTUAL 57' },
+      ],
+      notas: {
+        componentes: [ { nombre: 'Evaluación Continua', peso: 100, tipo: 'continua', nota: null } ],
+        evaluaciones: [
+          { nombre: 'Entregable 1', peso: 15, nota: 17 },
+          { nombre: 'Entregable 2', peso: 15, nota: 16 },
+          { nombre: 'Examen escrito 1', peso: 20, nota: 15 },
+          { nombre: 'Proyecto BIM', peso: 35, nota: null },
+          { nombre: 'Exposición', peso: 15, nota: null },
+        ],
+      },
+      asesorias: [ ['MARTES', '17:00', '18:00', 'LAB. CÓMPUTO 4'], ['JUEVES', '13:00', '14:00', 'VIRTUAL 57'] ],
+      docente: 'TORRES VALDIVIA, PATRICIA',
+    },
+    {
+      id: 'prob', nombre: 'PROB. Y ESTAD. APLIC', seccion: '303', color: '#DF3D93',
+      horas: { asist: 37, faltas: 4, total: 64 },
+      slots: [
+        { dow: 1, ini: '20:00', fin: '22:00', aula: 'VIRTUAL 6' },
+        { dow: 4, ini: '20:00', fin: '22:00', aula: 'VIRTUAL 6' },
+      ],
+      notas: {
+        componentes: [ { nombre: 'Evaluación Continua', peso: 100, tipo: 'continua', nota: null } ],
+        evaluaciones: [
+          { nombre: 'Ejercicio individual 1', peso: 15, nota: 15 },
+          { nombre: 'Examen escrito 1', peso: 25, nota: 14 },
+          { nombre: 'Ejercicio individual 2', peso: 15, nota: 16 },
+          { nombre: 'Examen escrito 2', peso: 25, nota: null },
+          { nombre: 'Trabajo aplicado', peso: 20, nota: null },
+        ],
+      },
+      asesorias: [ ['LUNES', '19:00', '20:00', 'VIRTUAL 6'], ['MIÉRCOLES', '19:00', '20:00', 'VIRTUAL 6'] ],
+      docente: 'CHÁVEZ MORALES, RICARDO',
+    },
+    {
+      id: 'tec', nombre: 'TEC. CONSTRUCCIÓN I', seccion: '504', color: '#8E44AD',
+      horas: { asist: 44, faltas: 16, total: 80 },
+      slots: [
+        { dow: 3, ini: '10:00', fin: '12:00', aula: 'H1-105' },
+        { dow: 6, ini: '08:00', fin: '10:00', aula: 'TALLER 3' },
+      ],
+      notas: {
+        componentes: [ { nombre: 'Evaluación Continua', peso: 100, tipo: 'continua', nota: null } ],
+        evaluaciones: [
+          { nombre: 'Visita de obra 1', peso: 15, nota: 18 },
+          { nombre: 'Examen escrito 1', peso: 25, nota: 13 },
+          { nombre: 'Informe técnico 1', peso: 20, nota: 15 },
+          { nombre: 'Examen escrito 2', peso: 25, nota: null },
+          { nombre: 'Maqueta', peso: 15, nota: null },
+        ],
+      },
+      asesorias: [ ['MIÉRCOLES', '12:00', '13:00', 'H1-110'], ['SÁBADO', '10:00', '11:00', 'TALLER 3'] ],
+      docente: 'SALAZAR NÚÑEZ, MIGUEL ÁNGEL',
+    },
+  ];
+
+  /* Próximas evaluaciones (Mi Ulima > Exámenes) */
+  const EXAMENES = [
+    { curso: 'calc', ev: 'Examen escrito 2', fecha: d(2026, 11, 23), ini: '07:00', fin: '09:00', aula: 'I2-104' },
+    { curso: 'fis', ev: 'Práctica calificada 2', fecha: d(2026, 11, 24), ini: '07:00', fin: '09:00', aula: 'E1-201' },
+    { curso: 'suelos', ev: 'Examen escrito 2', fecha: d(2026, 11, 25), ini: '14:00', fin: '16:00', aula: 'I1-306' },
+    { curso: 'bim', ev: 'Exposición', fecha: d(2026, 11, 26), ini: '10:00', fin: '13:00', aula: 'VIRTUAL 57' },
+    { curso: 'prob', ev: 'Examen escrito 2', fecha: d(2026, 11, 30), ini: '20:00', fin: '22:00', aula: 'VIRTUAL 6' },
+    { curso: 'tec', ev: 'Examen escrito 2', fecha: d(2026, 12, 2), ini: '10:00', fin: '12:00', aula: 'H1-105' },
+  ];
+
+  /* Estado de cuenta (montos inventados) */
+  const PAGOS = [
+    { concepto: 'Matrícula 2026-2', doc: 'B001-0418273', monto: 980.00, vence: d(2026, 8, 10), pagado: true },
+    { concepto: 'Pensión 2026-2 · Cuota 1', doc: 'B001-0418274', monto: 2185.00, vence: d(2026, 8, 31), pagado: true },
+    { concepto: 'Pensión 2026-2 · Cuota 2', doc: 'B001-0436120', monto: 2185.00, vence: d(2026, 9, 30), pagado: true },
+    { concepto: 'Pensión 2026-2 · Cuota 3', doc: 'B001-0451902', monto: 2185.00, vence: d(2026, 10, 31), pagado: true },
+    { concepto: 'Pensión 2026-2 · Cuota 4', doc: 'B001-0468831', monto: 2185.00, vence: d(2026, 11, 30), pagado: false },
+    { concepto: 'Pensión 2026-2 · Cuota 5', doc: 'B001-0482214', monto: 2185.00, vence: d(2026, 12, 15), pagado: false },
+  ];
+
+  /* Contenido público de ejemplo (inventado) */
+  const NOTICIAS = [
+    { id: 'n1', titulo: 'Inscripciones abiertas para los talleres culturales de verano', fecha: d(2026, 11, 10), icon: 'music', grad: ['#FE5117', '#F7A35C'],
+      cuerpo: ['Los talleres de música, danza, teatro y artes visuales abren sus inscripciones para el periodo de verano.', 'Las vacantes son limitadas y se asignan por orden de inscripción.'] },
+    { id: 'n2', titulo: 'Feria de empleabilidad: empresas buscan practicantes', fecha: d(2026, 11, 6), icon: 'briefcase', grad: ['#2F6FAE', '#5BA3E0'],
+      cuerpo: ['Estudiantes de los últimos ciclos podrán conversar con reclutadores y dejar su CV en los stands.', 'Habrá asesorías rápidas de CV antes del ingreso.'] },
+    { id: 'n3', titulo: 'Biblioteca: reserva de ambientes desde la app', fecha: d(2026, 10, 29), icon: 'books', grad: ['#6A4C93', '#A07CC5'],
+      cuerpo: ['Ahora puedes reservar cubículos grupales y salas de estudio desde Mi Ulima > Reserva de ambientes.', 'Cada alumno puede reservar hasta dos horas por día.'] },
+    { id: 'n4', titulo: 'Campaña de reciclaje de papel y botellas en el campus', fecha: d(2026, 10, 21), icon: 'leaf', grad: ['#3E8E41', '#7CC576'],
+      cuerpo: ['Se instalaron nuevos puntos de acopio diferenciados cerca de los principales pabellones.', 'Consulta su ubicación en el Mapa, capa Ulima Verde.'] },
+    { id: 'n5', titulo: 'Alumnos destacan en concurso interuniversitario de innovación', fecha: d(2026, 10, 14), icon: 'star', grad: ['#C2410C', '#F59E0B'],
+      cuerpo: ['Tres equipos llegaron a la final con propuestas de logística, salud y educación.', 'Los proyectos se presentarán en la próxima feria de emprendimiento.'] },
+  ];
+
+  const EVENTOS = [
+    { id: 'e1', titulo: 'Conversatorio: IA generativa en las empresas', fecha: d(2026, 11, 19), hora: '6:00 PM', lugar: 'Auditorio principal', icon: 'bulb', grad: ['#FE5117', '#F28B4C'],
+      desc: 'Especialistas comparten casos de uso, riesgos y oportunidades de la IA generativa. Ingreso libre con inscripción previa.' },
+    { id: 'e2', titulo: 'Taller: cómo preparar tu CV', fecha: d(2026, 11, 17), hora: '1:00 PM', lugar: 'Sala de usos múltiples', icon: 'briefcase', grad: ['#2F6FAE', '#5BA3E0'],
+      desc: 'Aprende a destacar tus logros, ordenar tu experiencia y optimizar tu perfil profesional.' },
+    { id: 'e3', titulo: 'Feria de emprendimiento universitario', fecha: d(2026, 11, 24), hora: '10:00 AM', lugar: 'Explanada central', icon: 'rocket', grad: ['#C2410C', '#F59E0B'],
+      desc: 'Emprendimientos de alumnos y egresados presentan sus productos y servicios.' },
+    { id: 'e4', titulo: 'Concierto de fin de semestre', fecha: d(2026, 11, 26), hora: '7:30 PM', lugar: 'Teatro del campus', icon: 'music', grad: ['#6A4C93', '#A07CC5'],
+      desc: 'Los elencos de música cierran el semestre con un repertorio de música peruana y latinoamericana.' },
+    { id: 'e5', titulo: 'Final de vóley interfacultades', fecha: d(2026, 11, 21), hora: '9:00 AM', lugar: 'Losa deportiva', icon: 'sport', grad: ['#3E8E41', '#7CC576'],
+      desc: 'Final del campeonato interfacultades. Ven a alentar a tu facultad.' },
+  ];
+
+  const AGENDA = [
+    { fecha: d(2026, 11, 13), titulo: 'Último día para retiro de cursos', tipo: 'Académico' },
+    { fecha: d(2026, 11, 17), titulo: 'Taller: cómo preparar tu CV', tipo: 'Evento' },
+    { fecha: d(2026, 11, 19), titulo: 'Conversatorio de IA generativa', tipo: 'Evento' },
+    { fecha: d(2026, 11, 21), titulo: 'Final de vóley interfacultades', tipo: 'Deporte' },
+    { fecha: d(2026, 11, 24), titulo: 'Feria de emprendimiento', tipo: 'Evento' },
+    { fecha: d(2026, 11, 26), titulo: 'Concierto de fin de semestre', tipo: 'Cultura' },
+    { fecha: d(2026, 11, 28), titulo: 'Fin de clases del semestre', tipo: 'Académico' },
+    { fecha: d(2026, 12, 7), titulo: 'Registro de notas finales', tipo: 'Académico' },
+    { fecha: d(2026, 12, 14), titulo: 'Publicación de notas finales', tipo: 'Académico' },
+  ];
+
+  const PROMOS = [
+    { nombre: 'Café Monterrico', cat: 'restaurantes', color: '#7A4A2A', desc: '15% de descuento en bebidas calientes y postres presentando tu carné virtual. Válido de lunes a viernes.' },
+    { nombre: 'Pizzería La Esquina', cat: 'restaurantes', color: '#C0392B', desc: '2x1 en pizzas medianas los martes y jueves para la comunidad universitaria.' },
+    { nombre: 'Gimnasio Activa', cat: 'salud', color: '#1F7A5A', desc: 'Matrícula gratis y 20% de descuento en el plan trimestral.' },
+    { nombre: 'Idiomas Global', cat: 'educacion', color: '#2F6FAE', desc: '25% de descuento en cursos intensivos de inglés, francés y portugués.' },
+    { nombre: 'Óptica Visión Clara', cat: 'salud', color: '#5B5FC7', desc: 'Examen visual gratuito y 30% de descuento en lunas con filtro de luz azul.' },
+    { nombre: 'Librería El Estudiante', cat: 'educacion', color: '#B7791F', desc: '10% de descuento en libros, útiles y material de dibujo técnico.' },
+    { nombre: 'Cine Plaza', cat: 'servicios', color: '#8E2D5B', desc: 'Entradas a precio especial de lunes a miércoles en funciones 2D.' },
+    { nombre: 'Lavandería Express', cat: 'servicios', color: '#0E7490', desc: '20% de descuento en lavado y planchado. Recojo a domicilio.' },
+  ];
+  const PROMO_CATS = [
+    { id: 'todas', label: 'Todas', icon: 'tag' }, { id: 'educacion', label: 'Educación', icon: 'cap' },
+    { id: 'servicios', label: 'Servicios', icon: 'ticket' }, { id: 'salud', label: 'Salud', icon: 'heart' },
+    { id: 'restaurantes', label: 'Restaurantes', icon: 'glass' },
+  ];
+
+  const CAFETERIAS = [
+    { nombre: 'Cafetería Central', lugar: 'Junto a la explanada central', horario: '7:00 AM – 9:00 PM',
+      menu: { entrada: 'Papa a la huancaína', fondo: 'Ají de gallina con arroz', postre: 'Mazamorra morada', bebida: 'Chicha morada', precio: 16.5 },
+      carta: [['Sándwich de pollo', 9.5], ['Ensalada fresca', 12], ['Jugo de fruta', 7], ['Café americano', 5.5]] },
+    { nombre: 'Comedor del pabellón E', lugar: 'Pabellón E, primer piso', horario: '8:00 AM – 6:00 PM',
+      menu: { entrada: 'Sopa de verduras', fondo: 'Arroz chaufa de pollo', postre: 'Gelatina', bebida: 'Limonada', precio: 15 },
+      carta: [['Tallarines rojos', 13], ['Lomo saltado', 19], ['Agua mineral', 3]] },
+    { nombre: 'Kiosko de la biblioteca', lugar: 'Frente a la biblioteca', horario: '7:30 AM – 8:00 PM', menu: null,
+      carta: [['Empanada de carne', 6], ['Muffin', 5], ['Café con leche', 6], ['Infusión', 3.5]] },
+  ];
+
+  /* Mapa esquemático (posiciones referenciales, no a escala) */
+  const EDIFICIOS = [
+    { id: 'A1', x: 22, y: 212, w: 64, h: 46 }, { id: 'B', x: 22, y: 138, w: 64, h: 58 },
+    { id: 'C', x: 22, y: 60, w: 64, h: 62 }, { id: 'D3', x: 104, y: 24, w: 54, h: 40 },
+    { id: 'E', x: 176, y: 24, w: 78, h: 44 }, { id: 'F1', x: 272, y: 24, w: 92, h: 44 },
+    { id: 'H', x: 300, y: 92, w: 64, h: 58 }, { id: 'I', x: 300, y: 168, w: 64, h: 50 },
+    { id: 'J', x: 222, y: 234, w: 78, h: 42 }, { id: 'O1', x: 318, y: 234, w: 46, h: 42 },
+    { id: 'BIB', x: 112, y: 92, w: 82, h: 56, label: 'Biblioteca' },
+    { id: 'AUD', x: 112, y: 214, w: 90, h: 46, label: 'Auditorio' },
+  ];
+  const LUGARES = [
+    { nombre: 'Tienda Ulima', ed: 'A1', cat: 'servicios', det: 'Edificio A1, primer piso.' },
+    { nombre: 'Cajeros automáticos', ed: 'J', cat: 'servicios', det: 'Edificio J, primer piso.' },
+    { nombre: 'Capilla', ed: 'D3', cat: 'servicios', det: 'Edificio D3, primer piso.' },
+    { nombre: 'Centro de Bienestar Universitario', ed: 'F1', cat: 'servicios', det: 'Edificio F1, primer piso.' },
+    { nombre: 'Oficina de Internacionalización', ed: 'J', cat: 'academico', det: 'Edificio J, primer piso.' },
+    { nombre: 'Torre O1 (oficinas de profesores)', ed: 'O1', cat: 'academico', det: 'Ubicación referencial en la réplica.' },
+    { nombre: 'Biblioteca', ed: 'BIB', cat: 'academico', det: 'Ubicación referencial en la réplica.' },
+    { nombre: 'Auditorio principal', ed: 'AUD', cat: 'academico', det: 'Ubicación referencial en la réplica.' },
+    { nombre: 'Cafetería Central', ed: null, x: 236, y: 150, cat: 'comida', det: 'Ubicación referencial en la réplica.' },
+    { nombre: 'Comedor del pabellón E', ed: 'E', cat: 'comida', det: 'Ubicación referencial en la réplica.' },
+  ];
+  const VERDE = [
+    { x: 150, y: 176, t: 'Punto de reciclaje' }, { x: 268, y: 196, t: 'Punto de reciclaje' },
+    { x: 96, y: 200, t: 'Bebedero' }, { x: 230, y: 92, t: 'Área verde' }, { x: 268, y: 140, t: 'Área verde' },
+  ];
+
+  const ENTREVISTAS = [
+    { id: 'v1', titulo: 'De practicante a jefa de obra', quien: 'Egresada de Ingeniería Civil', dur: '12 min', icon: 'briefcase', grad: ['#FE5117', '#F7A35C'],
+      desc: 'Una egresada cuenta cómo sus prácticas la llevaron a dirigir obras y qué cursos le sirvieron más.' },
+    { id: 'v2', titulo: 'Emprender durante la universidad', quien: 'Egresado de Administración', dur: '9 min', icon: 'rocket', grad: ['#C2410C', '#F59E0B'],
+      desc: 'Lecciones sobre validar una idea, conseguir los primeros clientes y equilibrar estudios con un negocio propio.' },
+    { id: 'v3', titulo: 'La analítica de datos en las empresas', quien: 'Expositora invitada', dur: '15 min', icon: 'bulb', grad: ['#2F6FAE', '#5BA3E0'],
+      desc: 'Cómo las organizaciones usan datos para tomar mejores decisiones, con ejemplos sencillos.' },
+  ];
+
+  const REDES = [
+    { red: 'Facebook', icon: 'globe' }, { red: 'Instagram', icon: 'camera' }, { red: 'X (Twitter)', icon: 'chat' },
+    { red: 'YouTube', icon: 'play' }, { red: 'LinkedIn', icon: 'briefcase' }, { red: 'TikTok', icon: 'music' },
+  ];
+
+  const REPOSITORIO = [
+    { t: 'Análisis comparativo de sistemas de muros de contención en suelos arenosos', a: 'Tesis de pregrado · Ingeniería Civil', y: 2025 },
+    { t: 'Implementación de la metodología BIM en proyectos de vivienda multifamiliar', a: 'Tesis de pregrado · Ingeniería Civil', y: 2025 },
+    { t: 'Modelo de optimización de rutas de reparto para una distribuidora', a: 'Tesis de pregrado · Ingeniería Industrial', y: 2024 },
+    { t: 'Aprendizaje automático para pronosticar la demanda de un minimarket', a: 'Tesis de pregrado · Ingeniería de Sistemas', y: 2025 },
+    { t: 'Uso de chatbots en la atención al estudiante universitario', a: 'Artículo · Revista académica', y: 2025 },
+    { t: 'Evaluación de concretos con agregado reciclado', a: 'Tesis de pregrado · Ingeniería Civil', y: 2023 },
+  ];
+
+  const AMBIENTES = [
+    { id: 'cg', nombre: 'Cubículo grupal', cap: '4 a 6 personas' },
+    { id: 'si', nombre: 'Sala individual', cap: '1 persona' },
+    { id: 'sm', nombre: 'Sala multimedia', cap: 'Hasta 8 personas' },
+  ];
+
+  const ENCUESTA_PREGUNTAS = [
+    'El docente explica los temas con claridad.',
+    'El docente cumple con el sílabo y el horario de clases.',
+    'Las evaluaciones se relacionan con lo desarrollado en clase.',
+    'El docente promueve la participación de los alumnos.',
+    'El docente está disponible para resolver consultas.',
+  ];
+
+  const AYUDA = [
+    ['¿Qué significa el gráfico de asistencia?', 'El verde son las horas asistidas, el rojo las horas de inasistencia y el gris las horas que aún faltan dictar. El porcentaje indica tus inasistencias sobre el total de horas del curso.'],
+    ['¿Por qué no veo una nota?', 'Las notas aparecen con un guion (-) hasta que el docente las registra. Toca "Actualizado" para volver a consultar.'],
+    ['¿Cómo escribo a mis compañeros?', 'En Aula Virtual elige un curso, entra a Contactos y toca el sobre de la esquina superior derecha.'],
+    ['¿Para qué sirve el ojo de Aula Virtual?', 'Oculta o muestra los porcentajes y gráficos de asistencia en pantalla.'],
+    ['¿Dónde veo mi carné?', 'En Mi Ulima > Carné virtual.'],
+  ];
+
+  const MEMBRESIAS = [
+    { k: 'Deportes', t: 'Complejo deportivo', s: 'Membresía estudiantil · vigente hasta el 31/12/2026', c1: '#FE5117', c2: '#F7A35C', icon: 'sport' },
+    { k: 'Biblioteca', t: 'Consorcio de universidades', s: 'Préstamo interbibliotecario · activo', c1: '#6A4C93', c2: '#A07CC5', icon: 'books' },
+    { k: 'Bienestar', t: 'Gimnasio del campus', s: 'Sin membresía activa', c1: '#7D746F', c2: '#A79E99', icon: 'heart' },
+  ];
+
+  /* Opciones de cálculo (editables en el panel oculto de Ayuda) */
+  const OPCIONES = { redondeo: 'entero', parcial: false, pesos: false };
+
+  window.ULIMA_DATA = {
+    OPCIONES, ALUMNO, ALUMNOS, CURSOS, EXAMENES, PAGOS, NOTICIAS, EVENTOS, AGENDA, PROMOS, PROMO_CATS,
+    CAFETERIAS, EDIFICIOS, LUGARES, VERDE, ENTREVISTAS, REDES, REPOSITORIO, AMBIENTES,
+    ENCUESTA_PREGUNTAS, AYUDA, MEMBRESIAS,
+  };
+})();
+
+</script>
+<script>
+/* ==========================================================================
+   Réplica académica de la Ulima App — lógica de navegación y pantallas.
+   Sin servidores: todo corre en el dispositivo con datos de ejemplo (data.js).
+   ========================================================================== */
+(function(){
+'use strict';
+const D = window.ULIMA_DATA, ic = window.ic, A = D.ALUMNO;
+
+/* ---------- Utilidades ---------- */
+const $ = (s, el) => (el || document).querySelector(s);
+const $$ = (s, el) => Array.prototype.slice.call((el || document).querySelectorAll(s));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const pad = n => String(n).padStart(2, '0');
+const toMin = t => { const p = t.split(':').map(Number); return p[0] * 60 + p[1]; };
+const fmt12 = t => { let p = t.split(':').map(Number), h = p[0]; const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12; return h + ':' + pad(p[1]) + ' ' + ap; };
+const fmtDate = d => pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear();
+const longDate = d => cap(DIAS[d.getDay()]) + ' ' + d.getDate() + ' de ' + MESES[d.getMonth()];
+const money = n => 'S/ ' + n.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const today = () => { const t = new Date(); t.setHours(0, 0, 0, 0); return t; };
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+const isoDay = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+const curso = id => D.CURSOS.find(c => c.id === id);
+const isNum = v => typeof v === 'number' && isFinite(v);
+const hash = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('ulimaReplica.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { if (v == null) localStorage.removeItem('ulimaReplica.' + k); else localStorage.setItem('ulimaReplica.' + k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } },
+};
+function relTime(ts) {
+  const m = Math.floor((Date.now() - ts) / 60000);
+  if (m < 1) return 'Ahora';
+  if (m < 60) return 'Hace ' + m + (m === 1 ? ' minuto' : ' minutos');
+  const h = Math.floor(m / 60);
+  if (h < 24) return 'Hace ' + h + (h === 1 ? ' hora' : ' horas');
+  const d = Math.floor(h / 24);
+  return 'Hace ' + d + (d === 1 ? ' día' : ' días');
+}
+
+/* ---------- Datos editables: se guardan en el dispositivo ---------- */
+const ORIG = JSON.parse(JSON.stringify({ alumno: D.ALUMNO, cursos: D.CURSOS, opciones: D.OPCIONES }));
+function applyData(src) {
+  D.CURSOS.length = 0;
+  JSON.parse(JSON.stringify(src.cursos)).forEach(c => D.CURSOS.push(c));
+  Object.keys(D.ALUMNO).forEach(k => delete D.ALUMNO[k]);
+  Object.assign(D.ALUMNO, JSON.parse(JSON.stringify(src.alumno)));
+  Object.assign(D.OPCIONES, ORIG.opciones, src.opciones || {});
+}
+(function loadSaved() {
+  const saved = store.get('datos', null);
+  if (saved && Array.isArray(saved.cursos) && saved.alumno) { try { applyData(saved); } catch (e) { applyData(ORIG); } }
+})();
+function saveData() { store.set('datos', { alumno: D.ALUMNO, cursos: D.CURSOS, opciones: D.OPCIONES }); }
+function resetData() { applyData(ORIG); store.set('datos', null); }
+
+/* ---------- Asistencia y notas (cálculos) ---------- */
+const horasOk = c => c.horas && c.horas.total > 0;
+const pctFaltas = c => horasOk(c) ? Math.round(c.horas.faltas / c.horas.total * 100) : 0;
+const pctAsist = c => horasOk(c) ? Math.round(c.horas.asist / c.horas.total * 100) : 0;
+const r2 = v => Math.round(v * 100 + 1e-9) / 100;
+function calcContinua(c) {
+  const ev = c.notas.evaluaciones;
+  if (!ev.length) return null;
+  const graded = ev.filter(e => isNum(e.nota));
+  if (!graded.length) return null;
+  if (graded.length < ev.length && !D.OPCIONES.parcial) return null;
+  const w = graded.reduce((s, e) => s + (+e.peso || 0), 0);
+  if (w <= 0) return null;
+  return graded.reduce((s, e) => s + e.nota * (+e.peso || 0), 0) / w;
+}
+const compValue = (c, k) => k.tipo === 'continua' ? calcContinua(c) : (isNum(k.nota) ? k.nota : null);
+function calcFinal(c) {
+  const comps = c.notas.componentes;
+  if (!comps.length) return null;
+  const vals = comps.map(k => [k, compValue(c, k)]).filter(x => x[1] != null);
+  if (!vals.length) return null;
+  if (vals.length < comps.length && !D.OPCIONES.parcial) return null;
+  const w = vals.reduce((s, x) => s + (+x[0].peso || 0), 0);
+  if (w <= 0) return null;
+  return vals.reduce((s, x) => s + x[1] * (+x[0].peso || 0), 0) / w;
+}
+const fmtNota = v => v == null ? '-' : String(r2(v));
+const fmtFinal = v => v == null ? '-' : (D.OPCIONES.redondeo === 'entero' ? String(Math.floor(r2(v) + 0.5)) : r2(v).toFixed(2));
+const sumPesos = list => list.reduce((s, x) => s + (+x.peso || 0), 0);
+
+/* ---------- Estado ---------- */
+const S = {
+  logged: false,
+  tab: 'horario',            // horario | aula | mi
+  dayOffset: 0,
+  privacy: false,
+  updatedAt: Date.now() - 2 * 3600 * 1000,
+  reservas: store.get('reservas', []),
+  encuestas: store.get('encuestas', {}),
+  inscritos: store.get('inscritos', {}),
+  chat: null,
+  noticeShown: false,
+  stack: [],
+};
+
+/* ---------- Gráfico de dona: verde (asistidas) → gris (por dictar) → rojo (faltas) ---------- */
+function donut(size, h) {
+  const r = size / 2, ri = r * 0.46, rm = (r + ri) / 2, sw = r - ri, C = 2 * Math.PI * rm;
+  const tot = h && h.total > 0 ? h.total : 0;
+  const g = tot ? Math.min(1, h.asist / tot) : 0, red = tot ? Math.min(1 - g, h.faltas / tot) : 0;
+  const arc = (from, frac, color) => frac <= 0 ? '' :
+    '<circle cx="' + r + '" cy="' + r + '" r="' + rm + '" fill="none" stroke="' + color + '" stroke-width="' + sw +
+    '" stroke-dasharray="' + (frac * C) + ' ' + C + '" stroke-dashoffset="' + (-from * C) + '" transform="rotate(-90 ' + r + ' ' + r + ')"/>';
+  return '<svg class="donut" viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '" aria-hidden="true">' +
+    '<circle cx="' + r + '" cy="' + r + '" r="' + rm + '" fill="none" stroke="rgba(0,0,0,0.175)" stroke-width="' + sw + '"/>' +
+    arc(0, g, '#31D059') + arc(1 - red, red, '#FC4639') + '</svg>';
+}
+function barcode(w, h) {
+  let x = 0, s = '', seed = 11;
+  const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  while (x < w - 3) { const bw = 1 + Math.floor(rnd() * 3), gap = 1 + Math.floor(rnd() * 3); s += '<rect x="' + x + '" y="0" width="' + bw + '" height="' + h + '"/>'; x += bw + gap; }
+  return '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" fill="#111" aria-hidden="true">' + s + '</svg>';
+}
+
+/* ---------- Piezas comunes ---------- */
+function topbar(o) {
+  o = o || {};
+  let l = '';
+  if (o.left === 'burger') l = '<button class="ab-left" data-act="drawer" aria-label="Abrir menú">' + ic('burger', 'i-burger') + '</button>';
+  if (o.left === 'back') l = '<button class="ab-left back" data-act="back" aria-label="Atrás">' + ic('back', 'i-back') + '</button>';
+  return '<header class="topbar"><div class="appbar">' + l + '<div class="ab-title' + (o.upper ? ' upper' : '') + '">' + (o.title || '') + '</div>' + (o.right || '') + '</div></header>';
+}
+const sub = (txt, extra) => '<div class="subheader"' + (extra || '') + '>' + txt + '</div>';
+const hair = '<span class="hair"></span>';
+const chevRow = (act, icon, label, extra) =>
+  '<button class="menu-row' + (extra && extra.short ? ' short' : '') + '" ' + act + '>' + ic(icon, 'm-ic') + '<span class="m-label">' + label + '</span>' + ic('chev', 'm-chev') + hair + '</button>';
+
+/* ---------- Navegación entre vistas ---------- */
+const appEl = () => $('#app');
+const viewsEl = () => $('#views');
+const topView = () => S.stack[S.stack.length - 1];
+function build(name, params) {
+  const def = Views[name](params || {});
+  const el = document.createElement('section');
+  el.className = 'view';
+  el.innerHTML = def.html;
+  return { name, params, def, el };
+}
+function setRoot(name, params) {
+  closeDrawer(); closeSheet();
+  S.stack.forEach(v => v.el.remove());
+  S.stack = [];
+  const v = build(name, params);
+  v.el.classList.add('fade-in');
+  viewsEl().appendChild(v.el);
+  S.stack.push(v);
+  if (v.def.mount) v.def.mount(v.el);
+  chrome();
+}
+function push(name, params) {
+  closeSheet();
+  const prev = topView();
+  const v = build(name, params);
+  v.el.classList.add('push-in');
+  viewsEl().appendChild(v.el);
+  if (prev) { prev.el.classList.remove('under-back', 'push-in', 'fade-in'); prev.el.classList.add('under'); }
+  S.stack.push(v);
+  if (v.def.mount) v.def.mount(v.el);
+  chrome();
+}
+function pop() {
+  if (S.stack.length < 2) return;
+  const cur = S.stack.pop(), prev = topView();
+  cur.el.classList.remove('push-in'); cur.el.classList.add('push-out');
+  prev.el.classList.remove('under'); prev.el.classList.add('under-back');
+  setTimeout(() => cur.el.remove(), 290);
+  if (prev.def.resume) prev.def.resume(prev.el);
+  chrome();
+}
+function chrome() {
+  const v = topView(), def = v ? v.def : {};
+  $('#statusbar').classList.toggle('dark', !!def.statusDark);
+  $('#homeInd').classList.toggle('light', !!def.homeLight);
+  /* En la app de iPhone (Expo) avisa el color de la barra de estado */
+  if (window.ReactNativeWebView) { try { window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'status', dark: !!def.statusDark })); } catch (e) { /* sin puente */ } }
+}
+
+/* ---------- Menú lateral ---------- */
+const SECTIONS = [
+  ['intranet', 'Intranet'], ['asistente', 'Asistente en Línea'], ['cafeteria', 'Cafetería'], ['eventos', 'Eventos'],
+  ['promos', 'Promociones'], ['mapa', 'Mapa'], ['redes', 'Redes Sociales'], ['noticias', 'Noticias'],
+  ['repositorio', 'Repositorio'], ['entrevistas', 'Entrevistas'], ['agenda', 'Agenda'], ['ayuda', 'Ayuda'],
+  ['membresias', 'Membresías'], ['acerca', 'Acerca de'],
+];
+function openDrawer() {
+  const cur = S.stack[0] ? S.stack[0].name : 'intranet';
+  $('#drawer').innerHTML = '<div class="d-head"><div class="d-inst">Universidad<br>de Lima</div></div>' +
+    SECTIONS.map(s => '<button class="d-item' + (s[0] === cur ? ' on' : '') + '" data-act="section" data-s="' + s[0] + '"><span class="d-ic">' + ic(s[0]) + '</span><span class="d-lb">' + s[1] + '</span></button>').join('') +
+    '<div class="d-foot"></div>';
+  $('#drawer').scrollTop = 0;
+  appEl().classList.add('drawer-open');
+}
+function closeDrawer() { appEl().classList.remove('drawer-open'); }
+
+/* ---------- Hoja inferior, modal y aviso ---------- */
+function openSheet(title, body, onMount) {
+  $('#sheetTitle').textContent = title;
+  $('#sheetBody').innerHTML = body;
+  $('#sheetBody').scrollTop = 0;
+  appEl().classList.add('sheet-open');
+  if (onMount) onMount($('#sheetBody'));
+}
+function closeSheet() { appEl().classList.remove('sheet-open'); }
+function modal(o) {
+  const w = document.createElement('div');
+  w.className = 'modal-wrap';
+  w.innerHTML = '<div class="modal" role="dialog" aria-modal="true">' +
+    (o.banner ? '<div class="m-banner">' + ic(o.banner.icon || 'info', 'bg') + '<div class="m-kicker">' + esc(o.banner.kicker) + '</div><div class="m-big">' + esc(o.banner.big) + '</div></div>' : '') +
+    (o.title ? '<div class="m-title">' + esc(o.title) + '</div>' : '') +
+    '<div class="m-body">' + o.body + '</div>' +
+    '<div class="m-actions">' + o.actions.map((a, i) => '<button data-i="' + i + '" class="' + (a.cls || '') + '">' + esc(a.label) + '</button>').join('') + '</div></div>';
+  w.addEventListener('click', e => {
+    const b = e.target.closest('button[data-i]');
+    if (!b) return;
+    const a = o.actions[+b.dataset.i];
+    w.remove();
+    if (a.fn) a.fn();
+  });
+  appEl().appendChild(w);
+  return w;
+}
+let toastTimer = null;
+function toast(msg, ms) {
+  const t = $('#toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), ms || 2600);
+}
+
+/* ======================================================================
+   VISTAS
+   ====================================================================== */
+const Views = {};
+
+/* ---------- Splash ---------- */
+Views.splash = () => ({
+  html: '<div class="splash"><div class="s-name">Universidad<br>de Lima</div><div class="spinner"></div></div>',
+  mount() { setTimeout(() => setRoot('intranet'), 1300); },
+});
+
+/* ---------- Intranet: login (demo) o pestañas ---------- */
+Views.intranet = () => ({
+  homeLight: true,
+  html: topbar({ left: 'burger', right: '<span id="abRight"></span>' }) +
+    '<div class="subheader" id="iSub"></div><main class="content" id="iContent"></main><div id="iFloat"></div>' +
+    '<nav class="tabbar" id="iTabs"></nav>',
+  mount(el) { renderIntranet(el); },
+  resume(el) { if (S.tab === 'mi') renderIntranet(el); },
+});
+
+function renderIntranet(el) {
+  el = el || (S.stack[0] && S.stack[0].el);
+  if (!el || !$('#iSub', el)) return;
+  const subEl = $('#iSub', el), content = $('#iContent', el), fl = $('#iFloat', el), tabs = $('#iTabs', el), right = $('#abRight', el);
+  right.innerHTML = '';
+  fl.innerHTML = '';
+  content.className = 'content';
+  subEl.removeAttribute('data-act'); subEl.style.cursor = '';
+  if (!S.logged) {
+    subEl.className = 'subheader'; subEl.textContent = 'Iniciar sesión';
+    tabs.style.display = 'none';
+    S.stack[0].def.homeLight = false; chrome();
+    content.innerHTML = loginHTML();
+    return;
+  }
+  tabs.style.display = '';
+  S.stack[0].def.homeLight = true; chrome();
+  tabs.innerHTML = [['horario', 'Horario', 'calClock'], ['aula', 'Aula Virtual', 'board'], ['mi', 'Mi Ulima', 'user']]
+    .map(t => '<button class="tab' + (S.tab === t[0] ? ' on' : '') + '" data-act="tab" data-t="' + t[0] + '">' + ic(t[2]) + '<span>' + t[1] + '</span></button>').join('');
+  if (S.tab === 'horario') renderHorario(subEl, content);
+  if (S.tab === 'aula') {
+    right.innerHTML = '<button class="ab-right" data-act="privacy" aria-label="Mostrar u ocultar porcentajes">' + ic(S.privacy ? 'eyeOff' : 'eye', 'i-eye') + '</button>';
+    renderAula(subEl, content);
+    fl.innerHTML = '<button class="float-btn" data-act="push" data-v="encuestas">Encuesta Referencial Docente</button>';
+  }
+  if (S.tab === 'mi') renderMi(subEl, content);
+}
+
+function loginHTML() {
+  return '<div style="padding:26px 18px 0">' +
+    '<div style="text-align:center;color:var(--brown);font-size:22px;font-weight:700">Intranet</div>' +
+    '<div style="text-align:center;color:#7d746f;font-size:15px;margin:6px 0 20px">Ingresa con tu cuenta de alumno</div>' +
+    '<div class="login-card" style="margin:0">' +
+    '<div class="demo-chip">' + ic('lock') + 'Modo demostración · datos ficticios</div>' +
+    '<div class="fake-field"><label>Usuario</label><div class="ff">' + ic('person') + esc(A.codigo) + '</div></div>' +
+    '<div class="fake-field"><label>Contraseña</label><div class="ff">' + ic('lock') + '••••••••</div></div>' +
+    '<button class="btn" data-act="login" id="loginBtn">Ingresar</button>' +
+    '<div class="login-links"><button data-act="forgot">¿Olvidaste tu contraseña?</button></div></div>' +
+    '<div class="login-foot">Réplica académica no oficial de la Ulima App.<br>No se conecta a la universidad ni solicita contraseñas reales.</div></div>';
+}
+
+/* --- Horario --- */
+function renderHorario(subEl, content) {
+  const d = addDays(today(), S.dayOffset);
+  subEl.className = 'subheader date';
+  subEl.innerHTML = '<button class="sh-arrow l" data-act="day" data-d="-1" aria-label="Día anterior">' + ic('dateL') + '</button>' +
+    '<button class="sh-mid" data-act="day" data-d="0">' + longDate(d) + '</button>' +
+    '<button class="sh-arrow r" data-act="day" data-d="1" aria-label="Día siguiente">' + ic('dateR') + '</button>';
+  const T0 = 22.4, H = 39.2, dow = d.getDay();
+  let html = '<div class="timeline">';
+  for (let h = 7; h <= 22; h++) {
+    const y = T0 + (h - 7) * H, n = h > 12 ? h - 12 : h;
+    html += '<div class="tl-line" style="top:' + y + 'px"></div><div class="tl-label" style="top:' + y + 'px"><b>' + n + '</b><small>' + (h < 12 ? 'AM' : 'PM') + '</small></div>';
+  }
+  D.CURSOS.forEach(c => c.slots.forEach((s, i) => {
+    if (+s.dow !== dow || toMin(s.fin) <= toMin(s.ini)) return;
+    const a = Math.max(toMin(s.ini), 420), b = Math.min(toMin(s.fin), 1320);
+    if (b <= a) return;
+    const y = T0 + (a - 420) / 60 * H, hh = (b - a) / 60 * H;
+    html += '<button class="tl-block" style="top:' + y + 'px;height:' + hh + 'px;background:' + esc(c.color) + '" data-act="slot" data-c="' + c.id + '" data-i="' + i + '">' +
+      '<div class="b1">' + esc(c.nombre) + '</div><div class="b2">' + esc(s.aula) + '</div></button>';
+  }));
+  content.innerHTML = html + '</div>';
+  content.scrollTop = 0;
+}
+
+/* --- Aula Virtual --- */
+function courseRow(c, act) {
+  return '<button class="course" ' + act + '>' +
+    '<span class="dot" style="background:' + esc(c.color) + '"></span>' +
+    '<span class="c-text"><span class="c-name">' + esc(c.nombre) + '</span><span class="c-sec">Sección: ' + esc(c.seccion) + '</span></span>' +
+    '<span class="c-pct">' + pctFaltas(c) + '%</span><span class="c-donut">' + donut(63, c.horas) + '</span>' +
+    '<span class="c-hidden">•••</span>' + ic('chevThin', 'c-chev') + hair + '</button>';
+}
+function renderAula(subEl, content) {
+  subEl.className = 'subheader';
+  subEl.setAttribute('data-act', 'refresh');
+  subEl.style.cursor = 'pointer';
+  subEl.textContent = 'Actualizado: ' + relTime(S.updatedAt);
+  content.classList.toggle('privacy', S.privacy);
+  content.innerHTML = (D.CURSOS.length ? D.CURSOS.map(c => courseRow(c, 'data-act="push" data-v="curso" data-id="' + c.id + '"')).join('') :
+    '<div class="empty">' + ic('board') + 'No tienes cursos registrados en este periodo.</div>') + '<div style="height:96px"></div>';
+}
+
+/* --- Mi Ulima --- */
+function renderMi(subEl, content) {
+  subEl.className = 'subheader';
+  subEl.textContent = 'Periodo académico ' + esc(A.periodo || '');
+  content.innerHTML = '<div class="summary mi-sum"><div class="me-photo">' + window.silhouette(74, 86) + '</div>' +
+    '<div class="me-text"><div class="me-name">' + esc(A.apellidos) + '<br>' + esc(A.nombres) + '</div>' +
+    '<div class="me-sub">Código: ' + esc(A.codigo) + '<br>' + esc(A.carrera) + ' · ' + esc(A.ciclo) + '</div></div></div>' +
+    chevRow('data-act="push" data-v="carne"', 'idCard', 'Carné Virtual', { short: 1 }) +
+    chevRow('data-act="push" data-v="examenes"', 'exam', 'Horario de Exámenes', { short: 1 }) +
+    chevRow('data-act="push" data-v="pagos"', 'pagos', 'Pagos', { short: 1 }) +
+    chevRow('data-act="push" data-v="reserva"', 'reserva', 'Reserva de Ambientes', { short: 1 }) +
+    chevRow('data-act="push" data-v="encuestas"', 'encuesta', 'Encuesta Docente', { short: 1 }) +
+    chevRow('data-act="logout"', 'logout', 'Cerrar Sesión', { short: 1 }) +
+    '<div class="note">Réplica académica · datos de ejemplo</div>';
+}
+
+/* ---------- Detalle de curso ---------- */
+Views.curso = p => {
+  const c = curso(p.id), h = c.horas;
+  return {
+    html: topbar({ left: 'back', title: esc(c.nombre), upper: true }) + sub('Sección: ' + esc(c.seccion)) +
+      '<main class="content"><div class="summary att">' +
+      '<div class="a-title">Asistencia</div>' +
+      '<div class="a-row" style="top:39.6px;color:var(--brown)"><span style="color:#34C759">' + ic('check') + '</span>' + h.asist + ' horas</div>' +
+      '<div class="a-row" style="top:68.1px;color:var(--brown)"><span style="color:#FF3B30">' + ic('xmark') + '</span>' + h.faltas + ' horas (' + pctFaltas(c) + '%)</div>' +
+      '<div class="a-line"></div>' +
+      '<div class="a-row" style="top:124.5px;color:var(--brown)"><span style="color:#8E8480">' + ic('equals') + '</span>' + h.total + ' horas</div>' +
+      '<div class="a-donut">' + donut(136, h) + '</div>' +
+      '<div class="a-upd">Actualizado: Ahora</div></div>' +
+      chevRow('data-act="push" data-v="notas" data-id="' + c.id + '"', 'award', 'Notas') +
+      chevRow('data-act="push" data-v="asesorias" data-id="' + c.id + '"', 'advisor', 'Asesorías') +
+      chevRow('data-act="push" data-v="contactos" data-id="' + c.id + '"', 'contacts', 'Contactos') +
+      '</main>',
+  };
+};
+
+Views.notas = p => {
+  const c = curso(p.id), n = c.notas, cont = n.componentes.some(k => k.tipo === 'continua');
+  const pesos = D.OPCIONES.pesos;
+  return {
+    html: topbar({ left: 'back', title: esc(c.nombre), upper: true }) + sub('Actualizado: Ahora') +
+      '<main class="content"><div class="summary perf"><div class="p-title">Rendimiento académico</div>' +
+      n.componentes.map(k => '<div class="p-row"><span class="p-n">' + esc(k.nombre) + '</span><span class="p-w">' + (+k.peso || 0) + '%</span><span class="p-v">' + fmtNota(compValue(c, k)) + '</span></div>').join('') +
+      '<div class="p-line"></div>' +
+      '<div class="p-row final"><span class="p-n">PROMEDIO FINAL</span><span class="p-w">' + sumPesos(n.componentes) + '%</span><span class="p-v">' + fmtFinal(calcFinal(c)) + '</span></div></div>' +
+      '<div class="sec-band">Otras evaluaciones</div>' +
+      (cont ? '<div class="grade">EVC<span class="g-v">' + fmtNota(calcContinua(c)) + '</span></div>' : '') +
+      n.evaluaciones.map(o => '<div class="grade"><span class="g-n">' + esc(o.nombre) + (pesos ? '<span class="g-w">' + (+o.peso || 0) + '%</span>' : '') + '</span><span class="g-v">' + (isNum(o.nota) ? r2(o.nota) : '-') + '</span></div>').join('') + '</main>',
+  };
+};
+
+Views.asesorias = p => {
+  const c = curso(p.id);
+  return {
+    html: topbar({ left: 'back', title: esc(c.nombre), upper: true }) + sub('Actualizado: Ahora') +
+      '<main class="content cream"><div class="ases-top"></div>' +
+      (c.asesorias.length ? c.asesorias.map((a, i) => (i ? '<div class="ases-gap"></div>' : '') +
+        '<div class="ases-card"><div class="r"><span>Día</span><span>' + esc(a[0]) + '</span></div>' +
+        '<div class="r"><span>Hora</span><span>' + fmt12(a[1]) + ' - ' + fmt12(a[2]) + '</span></div>' +
+        '<div class="r"><span>Lugar</span><span>' + esc(a[3]) + '</span></div></div>').join('') + '<div class="ases-gap"></div>' :
+        '<div class="empty">' + ic('clock') + 'No hay asesorías registradas.</div>') + '</main>',
+  };
+};
+
+function classList(c) {
+  // Delegado y subdelegado primero; luego orden alfabético (lista inventada)
+  const rot = hash(c.id) % 5;
+  const list = D.ALUMNOS.slice(rot).concat(D.ALUMNOS.slice(0, rot)).slice(0, 14).sort();
+  const del = list.splice((hash(c.id + 'd') % list.length), 1)[0];
+  const sub2 = list.splice((hash(c.id + 's') % list.length), 1)[0];
+  return [[del, 'Delegado'], [sub2, 'Sub Delegado']].concat(list.map(n => [n, '']));
+}
+Views.contactos = p => {
+  const c = curso(p.id), al = classList(c);
+  return {
+    html: topbar({ left: 'back', title: esc(c.nombre), upper: true, right: '<button class="ab-right" data-act="mail" data-id="' + c.id + '" aria-label="Enviar correo a todos">' + ic('mail', 'i-mail') + '</button>' }) +
+      sub('Actualizado: Ahora') +
+      '<main class="content cream"><div class="c-head">Docente</div>' +
+      '<button class="contact" data-act="mail" data-id="' + c.id + '" data-to="' + esc(c.docente) + '"><span class="ct-photo prof">' + ic('person') + '</span><span class="ct-text"><span class="ct-name" style="display:block">' + esc(c.docente) + '</span></span></button>' +
+      '<div class="c-head">Alumnos</div><div style="background:#fff">' +
+      al.map(a => '<button class="contact" data-act="mail" data-id="' + c.id + '" data-to="' + esc(a[0]) + '"><span class="ct-photo">' + ic('person') + '</span>' +
+        '<span class="ct-text"><span class="ct-name" style="display:block">' + esc(a[0]) + '</span>' + (a[1] ? '<span class="ct-role" style="display:block">' + a[1] + '</span>' : '') + '</span>' + hair + '</button>').join('') +
+      '</div></main>',
+  };
+};
+
+/* ---------- Mi Ulima: subsecciones ---------- */
+Views.carne = () => ({
+  statusDark: true,
+  html: '<div class="carne"><button class="ca-close" data-act="back" aria-label="Cerrar">' + ic('x') + '</button>' +
+    '<div class="ca-inst">UNIVERSIDAD<br>DE LIMA</div>' +
+    '<div class="ca-band"><div class="n1">' + esc(A.apellidos) + '</div><div class="n2">' + esc(A.nombres) + '</div><div class="code">' + esc(A.codigo) + '</div></div>' +
+    '<div class="ca-photo">' + window.silhouette(178, 207) + '</div><div class="ca-line"></div>' +
+    '<div class="ca-role">ALUMNO</div><div class="ca-bar">' + barcode(206, 46) + '</div>' +
+    '<div class="ca-water">DEMO · SIN VALIDEZ</div><div class="ca-legal">Réplica académica · no válido como identificación</div></div>',
+});
+
+Views.examenes = () => {
+  const t = today();
+  const items = D.EXAMENES.filter(e => curso(e.curso)).sort((a, b) => a.fecha - b.fecha);
+  return {
+    html: topbar({ left: 'back', title: 'Exámenes' }) + sub('Próximas evaluaciones') +
+      '<main class="content cream"><div style="height:14px"></div>' +
+      (items.length ? items.map(e => {
+        const c = curso(e.curso), past = e.fecha < t;
+        return '<div class="ases-card" style="border-left:5px solid ' + esc(c.color) + '">' +
+          '<div class="r"><span>Curso</span><span>' + esc(c.nombre) + '</span></div>' +
+          '<div class="r"><span>Evaluación</span><span>' + esc(e.ev) + '</span></div>' +
+          '<div class="r"><span>Fecha</span><span>' + longDate(e.fecha) + (past ? ' <span class="chip gray">Rendido</span>' : '') + '</span></div>' +
+          '<div class="r"><span>Hora</span><span>' + fmt12(e.ini) + ' - ' + fmt12(e.fin) + '</span></div>' +
+          '<div class="r"><span>Lugar</span><span>' + esc(e.aula) + '</span></div></div><div class="ases-gap"></div>';
+      }).join('') : '<div class="empty">' + ic('exam') + 'No hay evaluaciones programadas.</div>') + '</main>',
+  };
+};
+
+Views.pagos = () => {
+  const t = today();
+  const pend = D.PAGOS.filter(x => !x.pagado), total = pend.reduce((s, x) => s + x.monto, 0);
+  const next = pend.slice().sort((a, b) => a.vence - b.vence)[0];
+  return {
+    html: topbar({ left: 'back', title: 'Pagos' }) + sub('Estado de cuenta') +
+      '<main class="content cream"><div class="summary" style="padding:16px 18px 18px;text-align:center">' +
+      '<div style="font-size:15px">Total pendiente</div><div style="font-size:32px;font-weight:700;margin-top:2px">' + money(total) + '</div>' +
+      (next ? '<div style="font-size:14.5px;margin-top:4px;color:var(--tan)">Próximo vencimiento: ' + fmtDate(next.vence) + '</div>' : '') + '</div>' +
+      D.PAGOS.map((x, i) => {
+        const late = !x.pagado && x.vence < t;
+        const chip = x.pagado ? '<span class="chip ok">Pagado</span>' : late ? '<span class="chip bad">Vencido</span>' : '<span class="chip warn">Pendiente</span>';
+        return '<button class="list-row" data-act="pay" data-i="' + i + '"><span class="lr-main"><span class="lr-title" style="display:block">' + esc(x.concepto) + '</span>' +
+          '<span class="lr-sub" style="display:block">Vence: ' + fmtDate(x.vence) + '<br>Doc. ' + x.doc + '</span></span>' +
+          '<span style="text-align:right;flex:none"><span style="display:block;font-size:16px;font-weight:600">' + money(x.monto) + '</span><span style="display:block;margin-top:4px">' + chip + '</span></span>' + hair + '</button>';
+      }).join('') +
+      '<div class="note">Montos de ejemplo. La réplica no procesa pagos.</div></main>',
+  };
+};
+
+Views.reserva = () => {
+  const st = { day: 0, amb: D.AMBIENTES[0].id, sel: null };
+  const days = [];
+  for (let i = 0; days.length < 6; i++) { const d = addDays(today(), i); if (d.getDay() !== 0) days.push(d); }
+  const busy = (d, amb, h) => {
+    if (sameDay(d, today()) && h <= new Date().getHours()) return true;
+    return hash(isoDay(d) + amb + h) % 10 < 4;
+  };
+  const mine = (d, amb, h) => S.reservas.some(r => r.date === isoDay(d) && r.amb === amb && r.h === h);
+  function render(el) {
+    const d = days[st.day], ambObj = D.AMBIENTES.find(a => a.id === st.amb);
+    let slots = '';
+    for (let h = 8; h <= 20; h++) {
+      const m = mine(d, st.amb, h), b = !m && busy(d, st.amb, h);
+      slots += '<button class="slot' + (m ? ' mine' : b ? ' busy' : st.sel === h ? ' on' : '') + '" data-la="slot" data-h="' + h + '">' + fmt12(pad(h) + ':00').replace(':00', '') + '<small>' + (m ? 'Tu reserva' : b ? 'Ocupado' : 'Libre') + '</small></button>';
+    }
+    const mis = S.reservas.slice().sort((a, b) => (a.date + pad(a.h)).localeCompare(b.date + pad(b.h)));
+    $('.content', el).innerHTML =
+      '<div class="block-title">Fecha</div><div class="pill-row" style="padding-top:2px">' + days.map((x, i) => '<button class="pill' + (i === st.day ? ' on' : '') + '" data-la="day" data-i="' + i + '">' + (i === 0 && sameDay(x, today()) ? 'Hoy' : cap(DIAS[x.getDay()]).slice(0, 3) + ' ' + x.getDate()) + '</button>').join('') + '</div>' +
+      '<div class="block-title">Ambiente</div><div class="pill-row" style="padding-top:2px">' + D.AMBIENTES.map(a => '<button class="pill' + (a.id === st.amb ? ' on' : '') + '" data-la="amb" data-a="' + a.id + '">' + a.nombre + '</button>').join('') + '</div>' +
+      '<div style="padding:4px 18px 0;font-size:13.5px;color:#7d746f">' + ambObj.cap + ' · bloques de 1 hora · máximo 2 horas por día</div>' +
+      '<div class="block-title">Horario</div><div class="slots">' + slots + '</div>' +
+      '<div class="btns" style="padding-top:2px"><button class="btn" data-la="book"' + (st.sel == null ? ' disabled' : '') + '>Reservar</button></div>' +
+      '<div class="block-title">Mis reservas</div>' +
+      (mis.length ? mis.map(r => {
+        const dd = new Date(r.date + 'T00:00:00');
+        return '<div class="list-row" style="padding-right:17px">' + ic('reserva', 'lr-ic') + '<span class="lr-main"><span class="lr-title" style="display:block">' + esc(r.ambNombre) + '</span><span class="lr-sub" style="display:block">' + longDate(dd) + ' · ' + fmt12(pad(r.h) + ':00') + ' - ' + fmt12(pad(r.h + 1) + ':00') + '</span></span><button class="chip bad" data-la="cancel" data-k="' + r.date + '|' + r.amb + '|' + r.h + '">Cancelar</button>' + hair + '</div>';
+      }).join('') : '<div class="note" style="padding-top:4px">Aún no tienes reservas.</div>') +
+      '<div class="note">Reservas simuladas: se guardan solo en este dispositivo.</div>';
+  }
+  return {
+    html: topbar({ left: 'back', title: 'Reserva de Ambientes' }) + sub('Biblioteca') + '<main class="content cream"></main>',
+    mount(el) {
+      render(el);
+      el.addEventListener('click', e => {
+        const b = e.target.closest('[data-la]'); if (!b) return;
+        const la = b.dataset.la, d = days[st.day];
+        if (la === 'day') { st.day = +b.dataset.i; st.sel = null; }
+        if (la === 'amb') { st.amb = b.dataset.a; st.sel = null; }
+        if (la === 'slot') st.sel = st.sel === +b.dataset.h ? null : +b.dataset.h;
+        if (la === 'cancel') {
+          const k = b.dataset.k.split('|');
+          S.reservas = S.reservas.filter(r => !(r.date === k[0] && r.amb === k[1] && r.h === +k[2]));
+          store.set('reservas', S.reservas); toast('Reserva cancelada');
+        }
+        if (la === 'book') {
+          const count = S.reservas.filter(r => r.date === isoDay(d)).length;
+          if (count >= 2) { toast('Ya tienes 2 horas reservadas ese día'); return; }
+          const amb = D.AMBIENTES.find(a => a.id === st.amb), h = st.sel;
+          modal({
+            title: 'Confirmar reserva',
+            body: esc(amb.nombre) + '<br>' + longDate(d) + '<br>' + fmt12(pad(h) + ':00') + ' - ' + fmt12(pad(h + 1) + ':00'),
+            actions: [{ label: 'Cancelar' }, { label: 'Reservar', cls: 'strong', fn: () => {
+              S.reservas.push({ date: isoDay(d), amb: amb.id, ambNombre: amb.nombre, h });
+              store.set('reservas', S.reservas); st.sel = null; render(el);
+              toast('Reserva registrada (simulación)');
+            } }],
+          });
+          return;
+        }
+        render(el);
+      });
+    },
+  };
+};
+
+Views.encuestas = () => ({
+  html: topbar({ left: 'back', title: 'Encuesta Docente' }) + sub('Periodo ' + esc(A.periodo || '')) + '<main class="content cream"></main>',
+  mount(el) { this.resume(el); },
+  resume(el) {
+    const done = D.CURSOS.filter(c => S.encuestas[c.id]).length;
+    $('.content', el).innerHTML = '<div style="padding:16px 18px 10px;font-size:15px;line-height:1.45;color:#4a3f3a">Tu opinión es anónima y ayuda a mejorar las clases. Has completado <b>' + done + ' de ' + D.CURSOS.length + '</b> encuestas.</div>' +
+      D.CURSOS.map(c => '<button class="list-row" data-act="push" data-v="encuesta" data-id="' + c.id + '"><span style="width:14px;height:14px;border-radius:50%;flex:none;background:' + esc(c.color) + '"></span>' +
+        '<span class="lr-main"><span class="lr-title" style="display:block">' + esc(c.nombre) + '</span><span class="lr-sub" style="display:block">' + esc(c.docente) + '</span></span>' +
+        (S.encuestas[c.id] ? '<span class="chip ok">Completada</span>' : '<span class="chip warn">Pendiente</span>') + ic('chev', 'lr-chev') + hair + '</button>').join('');
+  },
+});
+
+Views.encuesta = p => {
+  const c = curso(p.id), ans = {}, prev = S.encuestas[c.id];
+  return {
+    html: topbar({ left: 'back', title: esc(c.nombre), upper: true }) + sub(esc(c.docente)) + '<main class="content cream"></main>',
+    mount(el) {
+      const box = $('.content', el);
+      if (prev) {
+        box.innerHTML = '<div class="empty">' + ic('check') + '<b style="color:#000">Encuesta enviada</b><br>Ya registraste tu opinión para este curso.</div>';
+        return;
+      }
+      box.innerHTML = '<div style="padding:14px 18px 8px;font-size:14.5px;color:#4a3f3a">Califica del 1 (totalmente en desacuerdo) al 5 (totalmente de acuerdo).</div>' +
+        D.ENCUESTA_PREGUNTAS.map((q, i) => '<div class="q"><div class="q-text">' + (i + 1) + '. ' + esc(q) + '</div><div class="likert">' +
+          [1, 2, 3, 4, 5].map(n => '<button data-la="lk" data-q="' + i + '" data-n="' + n + '">' + n + '</button>').join('') +
+          '</div><div class="likert-scale"><span>Desacuerdo</span><span>De acuerdo</span></div>' + hair + '</div>').join('') +
+        '<div class="q"><div class="q-text">Comentario (opcional)</div><textarea class="ta" maxlength="400" placeholder="Escribe un comentario…"></textarea></div>' +
+        '<div class="btns"><button class="btn" data-la="send" disabled>Enviar encuesta</button></div>';
+      box.addEventListener('click', e => {
+        const b = e.target.closest('[data-la]'); if (!b) return;
+        if (b.dataset.la === 'lk') {
+          ans[b.dataset.q] = +b.dataset.n;
+          b.parentNode.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+          $('[data-la="send"]', box).disabled = Object.keys(ans).length < D.ENCUESTA_PREGUNTAS.length;
+        }
+        if (b.dataset.la === 'send') {
+          S.encuestas[c.id] = { at: Date.now() };
+          store.set('encuestas', S.encuestas);
+          toast('¡Gracias! Encuesta registrada (simulación)');
+          pop();
+        }
+      });
+    },
+  };
+};
+
+/* ---------- Asistente en Línea (bot de reglas, sin conexión) ---------- */
+const GREETING = [
+  { me: false, html: '👋 Hola, soy el asistente virtual de demostración de la Universidad de Lima 🤖' },
+  { me: false, html: '¿En qué puedo ayudarte hoy?' },
+];
+Views.asistente = () => ({
+  html: topbar({ left: 'burger', title: 'Asistente en Línea', right: '<button class="ab-right" data-act="chatReset" aria-label="Reiniciar conversación">' + ic('sync', 'i-sync') + '</button>' }) +
+    '<main class="content gray" id="chatBox"><div class="chat" id="chat"></div></main>' +
+    '<div class="composer"><input id="chatIn" type="text" placeholder="Escribe tu pregunta..." autocomplete="off" aria-label="Escribe tu pregunta">' +
+    '<button class="send" id="chatSend" aria-label="Enviar">' + ic('send') + '</button></div>',
+  mount(el) {
+    if (!S.chat) S.chat = GREETING.slice();
+    renderChat();
+    const inp = $('#chatIn', el), btn = $('#chatSend', el);
+    inp.addEventListener('input', () => btn.classList.toggle('ready', inp.value.trim().length > 0));
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendChat(); } });
+    btn.addEventListener('click', sendChat);
+  },
+});
+function renderChat() {
+  const box = $('#chat'); if (!box) return;
+  box.innerHTML = S.chat.map(m => '<div class="msg ' + (m.me ? 'me' : 'bot') + '">' + m.html +
+    (m.actions ? '<div class="m-act">' + m.actions.map(a => '<button ' + a[1] + '>' + esc(a[0]) + '</button>').join('') + '</div>' : '') + '</div>').join('');
+  const sc = $('#chatBox'); sc.scrollTop = sc.scrollHeight;
+}
+function sendChat(text) {
+  const inp = $('#chatIn');
+  const q = typeof text === 'string' ? text : inp.value.trim();
+  if (!q) return;
+  inp.value = ''; $('#chatSend').classList.remove('ready');
+  S.chat.push({ me: true, html: esc(q) });
+  renderChat();
+  const box = $('#chat');
+  const typing = document.createElement('div');
+  typing.className = 'msg bot'; typing.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>'; typing.style.padding = '0';
+  box.appendChild(typing); $('#chatBox').scrollTop = 1e6;
+  setTimeout(() => { S.chat.push(botReply(q)); renderChat(); }, 650 + Math.random() * 400);
+}
+const SUGERENCIAS = [['Mi horario de hoy', 'data-act="ask" data-q="¿Qué clases tengo hoy?"'], ['Mis notas', 'data-act="ask" data-q="¿Cuáles son mis notas?"'],
+  ['Mis faltas', 'data-act="ask" data-q="¿Cuántas faltas tengo?"'], ['Pagos', 'data-act="ask" data-q="¿Cuándo vence mi próxima cuota?"'],
+  ['Reservar cubículo', 'data-act="ask" data-q="Quiero reservar un cubículo"']];
+const COURSE_KEYS = { calc: ['calculo'], fis: ['fisica'], suelos: ['suelos', 'mecanica'], bim: ['bim', 'modelamiento', 'mod inf', 'edifi', 'edificaciones'],
+  prob: ['prob', 'probabilidad', 'estadistica'], tec: ['tecnologia', 'construccion'] };
+const STOP = ['de', 'la', 'el', 'los', 'las', 'del', 'y', 'en', 'para', 'por', 'ii', 'iii', 'iv'];
+function findCourse(t) {
+  const tt = ' ' + t + ' ';
+  return D.CURSOS.find(c => {
+    const words = norm(c.nombre).split(' ').filter(w => w.length >= 3 && STOP.indexOf(w) < 0);
+    const keys = (COURSE_KEYS[c.id] || []).concat(words);
+    return keys.some(k => tt.includes(' ' + k) || (k.length >= 5 && tt.includes(k)));
+  });
+}
+function classesOn(d) {
+  const out = [];
+  D.CURSOS.forEach(c => c.slots.forEach(s => { if (+s.dow === d.getDay()) out.push({ c, s }); }));
+  return out.sort((a, b) => toMin(a.s.ini) - toMin(b.s.ini));
+}
+function botReply(q) {
+  const t = norm(q), has = (...w) => w.some(x => t.includes(x)), c = findCourse(t);
+  const go = (label, attrs) => [label, attrs];
+  if (has('quien eres', 'que eres', 'eres una ia', 'eres un bot', 'como funcionas', 'inteligencia artificial'))
+    return { html: 'Soy un asistente de demostración 🤖: reconozco palabras clave de tu pregunta (por ejemplo "notas", "faltas" o "pagos") y respondo con los datos de ejemplo de esta réplica. No estoy conectado a los sistemas de la universidad.' };
+  if (has('gracias')) return { html: '¡De nada! 😊 ¿Te ayudo con algo más?' };
+  if (has('adios', 'chau', 'hasta luego')) return { html: '¡Hasta luego! 👋 Éxitos en tus clases.' };
+  if (has('pago', 'cuota', 'pension', 'deuda', 'boleta', 'debo')) {
+    const pend = D.PAGOS.filter(x => !x.pagado).sort((a, b) => a.vence - b.vence);
+    if (!pend.length) return { html: 'No tienes pagos pendientes 🎉' };
+    return { html: 'Tu próxima cuota es <b>' + esc(pend[0].concepto) + '</b> por <b>' + money(pend[0].monto) + '</b>, vence el <b>' + fmtDate(pend[0].vence) + '</b>. En total tienes ' + money(pend.reduce((s, x) => s + x.monto, 0)) + ' pendiente.', actions: [go('Ver pagos', 'data-act="goPush" data-v="pagos"')] };
+  }
+  if (has('reserv', 'cubiculo', 'biblioteca', 'sala de estudio')) return { html: 'Puedes reservar cubículos grupales, salas individuales o la sala multimedia por bloques de 1 hora (máximo 2 horas por día).', actions: [go('Reservar ambiente', 'data-act="goPush" data-v="reserva"')] };
+  if (has('carne', 'carnet')) return { html: 'Tu carné virtual está en <b>Mi Ulima › Carné Virtual</b>.', actions: [go('Abrir carné', 'data-act="goPush" data-v="carne"')] };
+  if (has('asesoria')) {
+    const cc = c || D.CURSOS[0];
+    if (!cc) return { html: 'No tienes cursos registrados.' };
+    return { html: 'Asesorías de <b>' + esc(cc.nombre) + '</b>:' + (cc.asesorias.length ? '<ul>' + cc.asesorias.map(a => '<li>' + cap(String(a[0]).toLowerCase()) + ', ' + fmt12(a[1]) + ' - ' + fmt12(a[2]) + ' (' + esc(a[3]) + ')</li>').join('') + '</ul>' : ' no hay asesorías registradas.') };
+  }
+  if (has('delegado', 'companer', 'contacto', 'correo')) return { html: 'En <b>Aula Virtual</b> elige un curso y entra a <b>Contactos</b>: ahí ves al docente, al delegado y a tus compañeros, y puedes escribirles con el sobre ✉️.' };
+  if (has('falta', 'asistencia', 'inasistencia', 'asisti')) {
+    if (c) return { html: 'En <b>' + esc(c.nombre) + '</b> llevas ' + c.horas.asist + ' horas asistidas y ' + c.horas.faltas + ' horas de inasistencia (<b>' + pctFaltas(c) + '%</b>) de ' + c.horas.total + ' horas.', actions: [go('Ver curso', 'data-act="goCurso" data-id="' + c.id + '"')] };
+    return { html: 'Tus inasistencias por curso:<ul>' + D.CURSOS.map(x => '<li>' + esc(x.nombre) + ': <b>' + pctFaltas(x) + '%</b></li>').join('') + '</ul>' };
+  }
+  if (has('examen', 'evaluacion', 'parcial', 'final', 'cuando es') && !has('nota', 'promedio')) {
+    const t0 = today(), next = D.EXAMENES.filter(e => e.fecha >= t0 && curso(e.curso)).sort((a, b) => a.fecha - b.fecha);
+    const list = (c ? next.filter(e => e.curso === c.id) : next).slice(0, 4);
+    if (!list.length) return { html: 'No encontré evaluaciones próximas.' };
+    return { html: 'Tus próximas evaluaciones:<ul>' + list.map(e => '<li><b>' + esc(curso(e.curso).nombre) + '</b> · ' + esc(e.ev) + ': ' + longDate(e.fecha) + ', ' + fmt12(e.ini) + '</li>').join('') + '</ul>', actions: [go('Ver exámenes', 'data-act="goPush" data-v="examenes"')] };
+  }
+  if (has('nota', 'promedio', 'calific', 'saque', 'rendimiento')) {
+    if (c) {
+      const g = c.notas.evaluaciones.filter(o => isNum(o.nota)), fin = calcFinal(c);
+      return { html: 'Notas de <b>' + esc(c.nombre) + '</b>:' + (g.length ? '<ul>' + g.map(o => '<li>' + esc(o.nombre) + ' (' + (+o.peso || 0) + '%): <b>' + r2(o.nota) + '</b></li>').join('') + '</ul>' : ' aún no hay notas registradas. ') +
+        (fin != null ? 'Promedio final: <b>' + fmtFinal(fin) + '</b>.' : 'El promedio final aún no está completo.'), actions: [go('Ver notas', 'data-act="goNotas" data-id="' + c.id + '"')] };
+    }
+    if (!D.CURSOS.length) return { html: 'No tienes cursos registrados.' };
+    return { html: 'Tus evaluaciones calificadas:<ul>' + D.CURSOS.map(x => { const g = x.notas.evaluaciones.filter(o => isNum(o.nota)); return '<li>' + esc(x.nombre) + ': ' + (g.length ? g.map(o => r2(o.nota)).join(', ') : 'sin notas') + '</li>'; }).join('') + '</ul>Pregúntame por un curso para ver el detalle.' };
+  }
+  if (has('menu', 'almuerzo', 'comer', 'cafeteria', 'comida')) {
+    const k = D.CAFETERIAS[0];
+    return { html: 'Menú del día en ' + esc(k.nombre) + ': ' + esc(k.menu.entrada) + ' y ' + esc(k.menu.fondo) + ' a ' + money(k.menu.precio) + '.', actions: [go('Ver cafeterías', 'data-act="section" data-s="cafeteria"')] };
+  }
+  if (has('horario', 'clase', 'hoy', 'manana', 'toca', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado')) {
+    let d = today(), label = 'hoy';
+    const dn = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+    if (has('manana')) { d = addDays(d, 1); label = 'mañana'; }
+    dn.forEach((x, i) => { if (t.includes(x)) { let k = 0; while (addDays(today(), k).getDay() !== i) k++; d = addDays(today(), k); label = 'el ' + DIAS[i]; } });
+    const cl = classesOn(d);
+    if (!cl.length) return { html: 'No tienes clases ' + label + ' 🎉' };
+    return { html: 'Tus clases ' + label + ' (' + longDate(d).toLowerCase() + '):<ul>' + cl.map(x => '<li><b>' + esc(x.c.nombre) + '</b> · ' + fmt12(x.s.ini) + ' - ' + fmt12(x.s.fin) + ' · ' + esc(x.s.aula) + '</li>').join('') + '</ul>', actions: [go('Ver horario', 'data-act="goTab" data-t="horario"')] };
+  }
+  if (has('donde', 'ubicacion', 'queda', 'capilla', 'cajero', 'tienda', 'bienestar', 'internacional')) {
+    const l = D.LUGARES.find(x => norm(x.nombre).split(' ').some(w => w.length > 4 && t.includes(w)));
+    if (l) return { html: '<b>' + esc(l.nombre) + '</b>: ' + esc(l.det), actions: [go('Ver mapa', 'data-act="section" data-s="mapa"')] };
+    return { html: 'Puedes buscar lugares del campus en la sección <b>Mapa</b>.', actions: [go('Abrir mapa', 'data-act="section" data-s="mapa"')] };
+  }
+  if (has('evento', 'actividad', 'agenda', 'conversatorio', 'taller')) {
+    const t0 = today(), ev = D.EVENTOS.filter(e => e.fecha >= t0).sort((a, b) => a.fecha - b.fecha).slice(0, 3);
+    if (!ev.length) return { html: 'No hay eventos próximos.' };
+    return { html: 'Próximos eventos:<ul>' + ev.map(e => '<li>' + esc(e.titulo) + ' · ' + longDate(e.fecha) + '</li>').join('') + '</ul>', actions: [go('Ver eventos', 'data-act="section" data-s="eventos"')] };
+  }
+  if (has('promocion', 'descuento', 'promo')) return { html: 'Hay descuentos en restaurantes, salud, educación y servicios presentando tu carné virtual.', actions: [go('Ver promociones', 'data-act="section" data-s="promos"')] };
+  if (has('hola', 'buenas', 'buenos dias', 'hey', 'saludos')) return { html: '¡Hola! 😊 Puedo ayudarte con tu horario, notas, asistencia, pagos, exámenes o la reserva de ambientes.', actions: SUGERENCIAS };
+  return { html: 'No estoy seguro de haber entendido 🤔. Prueba con alguna de estas opciones:', actions: SUGERENCIAS };
+}
+
+/* ---------- Secciones públicas ---------- */
+const sectionTop = title => topbar({ left: 'burger', title });
+
+Views.cafeteria = () => ({
+  html: sectionTop('Cafetería') + sub('Menú del día · ' + longDate(today()).toLowerCase()) +
+    '<main class="content cream">' + D.CAFETERIAS.map(k => '<div class="card"><div style="font-size:18px;font-weight:700;color:var(--brown)">' + esc(k.nombre) + '</div>' +
+      '<div style="font-size:13.5px;color:#8a817c;margin:3px 0 8px">' + esc(k.lugar) + ' · ' + k.horario + '</div>' +
+      (k.menu ? '<div class="kv"><span class="k">Entrada</span><span class="v">' + esc(k.menu.entrada) + '</span></div><div class="kv"><span class="k">Segundo</span><span class="v">' + esc(k.menu.fondo) + '</span></div>' +
+        '<div class="kv"><span class="k">Postre</span><span class="v">' + esc(k.menu.postre) + '</span></div><div class="kv"><span class="k">Bebida</span><span class="v">' + esc(k.menu.bebida) + '</span></div>' +
+        '<div class="kv"><span class="k"><b style="color:#000">Menú completo</b></span><span class="v"><b>' + money(k.menu.precio) + '</b></span></div>' : '') +
+      '<div style="font-size:13px;color:#817C79;text-transform:uppercase;margin:12px 0 2px">Carta</div>' +
+      k.carta.map(x => '<div class="kv"><span class="k">' + esc(x[0]) + '</span><span class="v">' + money(x[1]) + '</span></div>').join('') + '</div>').join('') +
+    '<div class="note">Menús y precios de ejemplo.</div></main>',
+});
+
+function evRow(e, act) {
+  return '<button class="ev" ' + act + '><span class="thumb" style="background:linear-gradient(135deg,' + e.grad[0] + ',' + e.grad[1] + ')">' + ic(e.icon) +
+    (e.fecha ? '<span class="tdate"><b>' + e.fecha.getDate() + '</b><small>' + MESES[e.fecha.getMonth()].slice(0, 3) + '</small></span>' : '') + '</span>' +
+    '<span style="flex:1;min-width:0"><span class="e-title" style="display:block">' + esc(e.titulo) + '</span><span class="e-meta" style="display:block">' + (e.meta || '') + '</span></span>' + hair + '</button>';
+}
+Views.eventos = () => ({
+  html: sectionTop('Eventos') + sub('Próximos eventos') + '<main class="content">' +
+    D.EVENTOS.slice().sort((a, b) => a.fecha - b.fecha).map(e => evRow(Object.assign({ meta: cap(DIAS[e.fecha.getDay()]) + ' ' + e.fecha.getDate() + ' de ' + MESES[e.fecha.getMonth()] + ' · ' + e.hora + '<br>' + esc(e.lugar) }, e), 'data-act="push" data-v="evento" data-id="' + e.id + '"')).join('') +
+    '<div class="note">Eventos de ejemplo.</div></main>',
+});
+Views.evento = p => {
+  const e = D.EVENTOS.find(x => x.id === p.id);
+  return {
+    html: topbar({ left: 'back', title: 'Eventos' }) + '<main class="content"><div class="hero" style="background:linear-gradient(135deg,' + e.grad[0] + ',' + e.grad[1] + ')">' + ic(e.icon) + '</div>' +
+      '<div class="article"><h2>' + esc(e.titulo) + '</h2><div class="meta">' + longDate(e.fecha) + ' · ' + e.hora + '<br>' + esc(e.lugar) + '</div><p>' + esc(e.desc) + '</p></div>' +
+      '<div class="btns"><button class="btn" data-act="join" data-id="' + e.id + '">' + (S.inscritos[e.id] ? 'Inscrito ✓' : 'Inscribirme') + '</button>' +
+      '<button class="btn outline" data-act="toast" data-m="Evento agregado a tu calendario (simulación)">Agregar a mi calendario</button></div></main>',
+  };
+};
+
+Views.promos = () => {
+  const st = { cat: 'todas' };
+  function render(el) {
+    $('.promo-cats', el).innerHTML = D.PROMO_CATS.map(cc => '<button class="pc' + (cc.id === st.cat ? ' on' : '') + '" data-la="cat" data-c="' + cc.id + '">' + ic(cc.icon) + '<span>' + cc.label + '</span></button>').join('');
+    const list = D.PROMOS.filter(x => st.cat === 'todas' || x.cat === st.cat);
+    $('.content', el).innerHTML = list.map(x => '<button class="promo" data-la="open" data-i="' + D.PROMOS.indexOf(x) + '"><span class="logo" style="background:' + x.color + '">' + esc(x.nombre.toUpperCase()) + '</span>' +
+      '<span style="flex:1;min-width:0"><span class="p-name" style="display:block">' + esc(x.nombre) + '</span><span class="p-desc">' + esc(x.desc) + '</span></span>' + hair + '</button>').join('') +
+      '<div class="note">Comercios y descuentos de ejemplo.</div>';
+  }
+  return {
+    html: sectionTop('Promociones') + '<div class="promo-cats"></div>' + sub('Actualizado: ' + fmtDate(today())) + '<main class="content"></main>',
+    mount(el) {
+      render(el);
+      el.addEventListener('click', e => {
+        const b = e.target.closest('[data-la]'); if (!b) return;
+        if (b.dataset.la === 'cat') { st.cat = b.dataset.c; render(el); }
+        if (b.dataset.la === 'open') {
+          const x = D.PROMOS[+b.dataset.i];
+          openSheet(x.nombre, '<p>' + esc(x.desc) + '</p><div class="btns" style="padding:4px 0 6px"><button class="btn" data-act="goPush" data-v="carne">Mostrar mi carné virtual</button></div>');
+        }
+      });
+    },
+  };
+};
+
+Views.mapa = () => {
+  const st = { filter: 'todos', sel: null, verde: false };
+  const cats = [['todos', 'Todos'], ['academico', 'Académico'], ['servicios', 'Servicios'], ['comida', 'Comida'], ['verde', 'Ulima Verde']];
+  function svg() {
+    let s = '<svg viewBox="0 0 390 300" role="img" aria-label="Esquema del campus"><rect width="390" height="300" fill="#E4ECD9"/>' +
+      '<path d="M0 290h390M8 0v300M95 0v300M206 0v226M290 80v220M95 80h290M95 226h295" stroke="#fff" stroke-width="9" fill="none"/>';
+    D.EDIFICIOS.forEach(b => {
+      const on = st.sel && st.sel === b.id;
+      s += '<g data-la="bld" data-b="' + b.id + '" style="cursor:pointer"><rect x="' + b.x + '" y="' + b.y + '" width="' + b.w + '" height="' + b.h + '" rx="4" fill="' + (on ? '#FE5117' : '#D8CFC8') + '" stroke="' + (on ? '#C93A0A' : '#B9ADA5') + '"/>' +
+        '<text x="' + (b.x + b.w / 2) + '" y="' + (b.y + b.h / 2 + 4) + '" text-anchor="middle" font-size="' + (b.label ? 11 : 13) + '" font-weight="700" fill="' + (on ? '#fff' : '#5b4f49') + '" font-family="-apple-system,Segoe UI,Roboto,Arial">' + (b.label || b.id) + '</text></g>';
+    });
+    D.LUGARES.filter(l => !l.ed && (st.filter === 'todos' || st.filter === l.cat)).forEach(l => {
+      s += '<g data-la="place" data-n="' + esc(l.nombre) + '" style="cursor:pointer"><circle cx="' + l.x + '" cy="' + l.y + '" r="8" fill="#FE5117" stroke="#fff" stroke-width="2"/></g>';
+    });
+    if (st.verde) D.VERDE.forEach(v => { s += '<circle cx="' + v.x + '" cy="' + v.y + '" r="7" fill="#3E8E41" stroke="#fff" stroke-width="2"><title>' + esc(v.t) + '</title></circle>'; });
+    return s + '</svg>';
+  }
+  function render(el) {
+    const places = D.LUGARES.filter(l => st.filter === 'todos' || st.filter === 'verde' || l.cat === st.filter);
+    $('.content', el).innerHTML = '<div class="map-wrap">' + svg() + '<div class="map-legend">Esquema referencial</div></div>' +
+      '<div class="pill-row">' + cats.map(c => '<button class="pill' + ((c[0] === 'verde' ? st.verde : st.filter === c[0]) ? ' on' : '') + '" data-la="filter" data-f="' + c[0] + '">' + c[1] + '</button>').join('') + '</div>' +
+      (st.verde ? '<div style="padding:4px 18px 8px;font-size:13.5px;color:#3E8E41">● Puntos de reciclaje, bebederos y áreas verdes</div>' : '') +
+      '<div style="height:6px"></div>' +
+      places.map(l => '<button class="list-row" data-la="place" data-n="' + esc(l.nombre) + '">' + ic('pin', 'lr-ic') + '<span class="lr-main"><span class="lr-title" style="display:block">' + esc(l.nombre) + '</span><span class="lr-sub" style="display:block">' + (l.ed ? 'Edificio ' + l.ed : 'Exterior') + '</span></span>' + ic('chev', 'lr-chev') + hair + '</button>').join('') +
+      '<div class="note">Esquema no a escala. Ubicaciones referenciales.</div>';
+  }
+  return {
+    html: sectionTop('Mapa') + sub('Campus') + '<main class="content cream"></main>',
+    mount(el) {
+      render(el);
+      el.addEventListener('click', e => {
+        const b = e.target.closest('[data-la]'); if (!b) return;
+        if (b.dataset.la === 'filter') { if (b.dataset.f === 'verde') st.verde = !st.verde; else st.filter = b.dataset.f; render(el); }
+        if (b.dataset.la === 'place') {
+          const l = D.LUGARES.find(x => x.nombre === b.dataset.n);
+          st.sel = l.ed; render(el);
+          $('.content', el).scrollTop = 0;
+          openSheet(l.nombre, '<p>' + esc(l.det) + '</p>');
+        }
+        if (b.dataset.la === 'bld') {
+          const id = b.dataset.b, inside = D.LUGARES.filter(x => x.ed === id);
+          st.sel = id; render(el);
+          const bl = D.EDIFICIOS.find(x => x.id === id);
+          openSheet(bl.label || 'Edificio ' + id, inside.length ? '<p>' + inside.map(x => '<b>' + esc(x.nombre) + '</b><br>' + esc(x.det)).join('<br><br>') + '</p>' : '<p>Aulas y oficinas.</p>');
+        }
+      });
+    },
+  };
+};
+
+Views.redes = () => ({
+  html: sectionTop('Redes Sociales') + sub('Síguenos') + '<main class="content">' +
+    D.REDES.map(r => '<button class="list-row" data-act="toast" data-m="En la app oficial se abre la cuenta de la universidad en ' + esc(r.red) + '">' + ic(r.icon, 'lr-ic') +
+      '<span class="lr-main"><span class="lr-title" style="display:block">' + esc(r.red) + '</span><span class="lr-sub" style="display:block">Universidad de Lima</span></span>' + ic('chev', 'lr-chev') + hair + '</button>').join('') + '</main>',
+});
+
+Views.noticias = () => ({
+  html: sectionTop('Noticias') + sub('Actualizado: Ahora') + '<main class="content">' +
+    D.NOTICIAS.map(n => evRow({ titulo: n.titulo, icon: n.icon, grad: n.grad, meta: fmtDate(n.fecha) }, 'data-act="push" data-v="noticia" data-id="' + n.id + '"')).join('') +
+    '<div class="note">Noticias de ejemplo.</div></main>',
+});
+Views.noticia = p => {
+  const n = D.NOTICIAS.find(x => x.id === p.id);
+  return {
+    html: topbar({ left: 'back', title: 'Noticias' }) + '<main class="content"><div class="hero" style="background:linear-gradient(135deg,' + n.grad[0] + ',' + n.grad[1] + ')">' + ic(n.icon) + '</div>' +
+      '<div class="article"><h2>' + esc(n.titulo) + '</h2><div class="meta">' + longDate(n.fecha) + ' de ' + n.fecha.getFullYear() + '</div>' + n.cuerpo.map(x => '<p>' + esc(x) + '</p>').join('') + '</div>' +
+      '<div class="note">Contenido de ejemplo para la réplica.</div></main>',
+  };
+};
+
+Views.repositorio = () => ({
+  html: sectionTop('Repositorio') + sub('Producción académica') + '<main class="content cream"><div class="search">' + ic('search') + '<input id="repoQ" type="search" placeholder="Buscar por título o carrera" aria-label="Buscar"></div><div id="repoList"></div></main>',
+  mount(el) {
+    const draw = () => {
+      const q = norm($('#repoQ', el).value || '');
+      const list = D.REPOSITORIO.filter(r => !q || norm(r.t + ' ' + r.a).includes(q));
+      $('#repoList', el).innerHTML = (list.length ? list.map(r => '<button class="list-row" data-act="repo" data-t="' + esc(r.t) + '">' + ic('book', 'lr-ic') + '<span class="lr-main"><span class="lr-title" style="display:block;font-size:15.5px">' + esc(r.t) + '</span><span class="lr-sub" style="display:block">' + esc(r.a) + ' · ' + r.y + '</span></span>' + ic('chev', 'lr-chev') + hair + '</button>').join('') : '<div class="empty">' + ic('search') + 'Sin resultados</div>') +
+        '<div class="note">Registros de ejemplo.</div>';
+    };
+    $('#repoQ', el).addEventListener('input', draw);
+    draw();
+  },
+});
+
+Views.entrevistas = () => ({
+  html: sectionTop('Entrevistas') + sub('Graduados y expositores') + '<main class="content">' +
+    D.ENTREVISTAS.map(v => evRow({ titulo: v.titulo, icon: 'play', grad: v.grad, meta: esc(v.quien) + '<br>Video · ' + v.dur }, 'data-act="push" data-v="entrevista" data-id="' + v.id + '"')).join('') +
+    '<div class="note">Entrevistas de ejemplo.</div></main>',
+});
+Views.entrevista = p => {
+  const v = D.ENTREVISTAS.find(x => x.id === p.id);
+  return {
+    html: topbar({ left: 'back', title: 'Entrevistas' }) + '<main class="content"><button class="hero" style="width:100%;background:linear-gradient(135deg,' + v.grad[0] + ',' + v.grad[1] + ')" data-act="toast" data-m="Reproducción de video no disponible en la réplica">' + ic('play') + '</button>' +
+      '<div class="article"><h2>' + esc(v.titulo) + '</h2><div class="meta">' + esc(v.quien) + ' · ' + v.dur + '</div><p>' + esc(v.desc) + '</p></div></main>',
+  };
+};
+
+Views.agenda = () => {
+  const st = { month: new Date(today().getFullYear(), today().getMonth(), 1), sel: today() };
+  function render(el) {
+    const m = st.month, first = new Date(m.getFullYear(), m.getMonth(), 1), start = addDays(first, -((first.getDay() + 6) % 7));
+    let grid = ['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(x => '<div class="dow">' + x + '</div>').join('');
+    for (let i = 0; i < 42; i++) {
+      const d = addDays(start, i), has = D.AGENDA.some(a => sameDay(a.fecha, d));
+      grid += '<button class="day' + (d.getMonth() !== m.getMonth() ? ' out' : '') + (sameDay(d, today()) ? ' today' : '') + (sameDay(d, st.sel) ? ' sel' : '') + '" data-la="day" data-t="' + d.getTime() + '">' + d.getDate() + (has ? '<span class="mk"></span>' : '') + '</button>';
+    }
+    const dayItems = D.AGENDA.filter(a => sameDay(a.fecha, st.sel));
+    const monthItems = D.AGENDA.filter(a => a.fecha.getMonth() === m.getMonth() && a.fecha.getFullYear() === m.getFullYear());
+    $('.content', el).innerHTML = '<div class="cal"><div class="cal-head"><button data-la="prev" aria-label="Mes anterior">' + ic('dateL') + '</button><b>' + MESES[m.getMonth()] + ' ' + m.getFullYear() + '</b><button data-la="next" aria-label="Mes siguiente">' + ic('dateR') + '</button></div><div class="cal-grid">' + grid + '</div></div>' +
+      '<div class="block-title">' + longDate(st.sel) + '</div>' +
+      (dayItems.length ? dayItems.map(a => '<div class="list-row" style="padding-right:17px">' + ic('calendar', 'lr-ic') + '<span class="lr-main"><span class="lr-title" style="display:block">' + esc(a.titulo) + '</span><span class="lr-sub" style="display:block">' + a.tipo + '</span></span>' + hair + '</div>').join('') : '<div class="note" style="padding-top:2px">No hay actividades para este día.</div>') +
+      '<div class="block-title">Actividades del mes</div>' +
+      (monthItems.length ? monthItems.map(a => '<button class="list-row" data-la="day" data-t="' + a.fecha.getTime() + '"><span style="width:44px;flex:none;text-align:center;color:var(--orange);font-weight:700;font-size:20px;line-height:1">' + a.fecha.getDate() + '<small style="display:block;font-size:10px;text-transform:uppercase;margin-top:3px">' + MESES[a.fecha.getMonth()].slice(0, 3) + '</small></span><span class="lr-main"><span class="lr-title" style="display:block">' + esc(a.titulo) + '</span><span class="lr-sub" style="display:block">' + a.tipo + '</span></span>' + hair + '</button>').join('') : '<div class="note" style="padding-top:2px">Sin actividades este mes.</div>') +
+      '<div class="note">Actividades de ejemplo.</div>';
+  }
+  return {
+    html: sectionTop('Agenda') + sub('Actividades programadas') + '<main class="content cream"></main>',
+    mount(el) {
+      render(el);
+      el.addEventListener('click', e => {
+        const b = e.target.closest('[data-la]'); if (!b) return;
+        if (b.dataset.la === 'day') { st.sel = new Date(+b.dataset.t); st.month = new Date(st.sel.getFullYear(), st.sel.getMonth(), 1); }
+        if (b.dataset.la === 'prev') st.month = new Date(st.month.getFullYear(), st.month.getMonth() - 1, 1);
+        if (b.dataset.la === 'next') st.month = new Date(st.month.getFullYear(), st.month.getMonth() + 1, 1);
+        render(el);
+      });
+    },
+  };
+};
+
+Views.ayuda = () => ({
+  html: sectionTop('Ayuda') + sub('Preguntas frecuentes') + '<main class="content cream"><div style="height:12px"></div>' +
+    D.AYUDA.map(f => '<details class="faq"><summary>' + esc(f[0]) + '</summary><div class="faq-a">' + esc(f[1]) + '</div>' + hair + '</details>').join('') +
+    '<div class="btns" style="padding-top:18px"><button class="btn outline" data-act="section" data-s="asistente">Preguntar al Asistente en Línea</button></div>' +
+    '<button class="ver-tap" data-act="verTap">Versión 15.0 · réplica académica</button></main>',
+});
+
+Views.membresias = () => ({
+  html: sectionTop('Membresías') + sub('Tus membresías') + '<main class="content cream">' +
+    D.MEMBRESIAS.map(m => '<div class="member" style="background:linear-gradient(135deg,' + m.c1 + ',' + m.c2 + ')">' + ic(m.icon, 'bg') + '<div class="mb-k">' + esc(m.k) + '</div><div class="mb-t">' + esc(m.t) + '</div><div class="mb-s">' + esc(m.s) + '</div></div>').join('') +
+    '<div class="note">Membresías de ejemplo.</div></main>',
+});
+
+Views.acerca = () => ({
+  html: sectionTop('Acerca de') + sub('Ulima App') + '<main class="content cream">' +
+    '<div class="card"><div style="font-size:19px;font-weight:700;color:var(--brown)">Réplica académica de la Ulima App</div>' +
+    '<div class="kv"><span class="k">Versión de referencia</span><span class="v">15 (App Store)</span></div>' +
+    '<div class="kv"><span class="k">Tipo</span><span class="v">App de demostración, no oficial</span></div>' +
+    '<div class="kv"><span class="k">Datos</span><span class="v">De ejemplo</span></div></div>' +
+    '<div class="card" style="font-size:15px;line-height:1.55;color:#3d3531">Este prototipo reproduce la navegación y el diseño de la aplicación de la Universidad de Lima con fines académicos. No se conecta a los servidores de la universidad, no solicita ni guarda contraseñas, no procesa pagos y el carné que muestra no tiene validez. El logotipo y el ícono oficiales no se incluyen.</div>' +
+    '<div class="card" style="font-size:15px;line-height:1.55;color:#3d3531"><b>Funciones replicadas</b><br>Intranet (Horario, Aula Virtual con asistencia, notas, asesorías y contactos, Mi Ulima), Asistente en Línea, Cafetería, Eventos, Promociones, Mapa, Redes Sociales, Noticias, Repositorio, Entrevistas, Agenda, Ayuda y Membresías.</div></main>',
+});
+
+/* ======================================================================
+   PANEL DE CONFIGURACIÓN (oculto en Ayuda, contraseña 123)
+   ====================================================================== */
+const ADMIN_PASS = '123';
+const PALETTE = ['#3FCC4C', '#F3BB02', '#408DDD', '#EC513B', '#DF3D93', '#8E44AD', '#16A085', '#E67E22', '#2C3E50', '#00A8E8', '#C0392B', '#7F8C8D'];
+const DOWS = [[1, 'Lunes'], [2, 'Martes'], [3, 'Miércoles'], [4, 'Jueves'], [5, 'Viernes'], [6, 'Sábado'], [0, 'Domingo']];
+const TIMES = (() => { const t = []; for (let m = 7 * 60; m <= 22 * 60; m += 30) t.push(pad(Math.floor(m / 60)) + ':' + pad(m % 60)); return t; })();
+let verTaps = 0, verTimer = null;
+
+function askPassword() {
+  const w = document.createElement('div');
+  w.className = 'modal-wrap';
+  w.innerHTML = '<div class="modal" role="dialog" aria-modal="true"><div class="m-title">Acceso restringido</div>' +
+    '<div class="m-body">Ingresa la contraseña para abrir el panel de configuración.<input class="pw-input" id="pwIn" type="password" inputmode="numeric" autocomplete="off" maxlength="12" aria-label="Contraseña"><div class="pw-err" id="pwErr"></div></div>' +
+    '<div class="m-actions"><button data-x="cancel">Cancelar</button><button class="strong" data-x="ok">Entrar</button></div></div>';
+  appEl().appendChild(w);
+  const inp = $('#pwIn', w);
+  const tryIt = () => {
+    if (inp.value === ADMIN_PASS) { w.remove(); push('admin'); return; }
+    $('#pwErr', w).textContent = 'Contraseña incorrecta';
+    const m = $('.modal', w); m.classList.remove('shake'); void m.offsetWidth; m.classList.add('shake');
+    inp.value = ''; inp.focus();
+  };
+  w.addEventListener('click', e => {
+    const b = e.target.closest('button[data-x]'); if (!b) return;
+    if (b.dataset.x === 'cancel') w.remove(); else tryIt();
+  });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); tryIt(); } });
+  setTimeout(() => inp.focus(), 60);
+}
+
+const fld = (label, inner, cls) => '<div class="f' + (cls ? ' ' + cls : '') + '"><label>' + label + '</label>' + inner + '</div>';
+const inp = (path, val, type, extra) => '<input data-f="' + path + '" data-t="' + type + '" value="' + esc(val == null ? '' : val) + '"' +
+  (type === 'num' || type === 'int' || type === 'grade' ? ' inputmode="decimal"' : '') + (extra || '') + '>';
+const sel = (path, val, opts, type) => '<select data-f="' + path + '" data-t="' + (type || 'text') + '">' +
+  opts.map(o => '<option value="' + esc(o[0]) + '"' + (String(o[0]) === String(val) ? ' selected' : '') + '>' + esc(o[1]) + '</option>').join('') + '</select>';
+function parseVal(type, raw) {
+  const s = String(raw).trim().replace(',', '.');
+  if (type === 'text') return String(raw);
+  if (type === 'grade') { if (s === '') return null; const n = parseFloat(s); return isFinite(n) ? Math.max(0, Math.min(20, n)) : null; }
+  if (type === 'int') { const n = parseInt(s, 10); return isFinite(n) ? Math.max(0, n) : 0; }
+  if (type === 'num') { const n = parseFloat(s); return isFinite(n) ? Math.max(0, n) : 0; }
+  if (type === 'dow') return parseInt(s, 10);
+  return s;
+}
+function setPath(obj, path, val) {
+  const ks = path.split('.'); let o = obj;
+  for (let i = 0; i < ks.length - 1; i++) o = o[/^\d+$/.test(ks[i]) ? +ks[i] : ks[i]];
+  const last = ks[ks.length - 1];
+  o[/^\d+$/.test(last) ? +last : last] = val;
+}
+function newId() { let id; do { id = 'c' + Math.random().toString(36).slice(2, 7); } while (curso(id)); return id; }
+
+Views.admin = () => ({
+  html: topbar({ left: 'back', title: 'Panel de configuración' }) + sub('Modo docente · los cambios se guardan solos') + '<main class="content cream"></main>',
+  mount(el) { this.resume(el); },
+  resume(el) {
+    const o = D.OPCIONES;
+    const pills = (k, opts) => '<div class="pill-row" style="padding:6px 0 2px">' + opts.map(x => '<button class="pill' + (String(o[k]) === String(x[0]) ? ' on' : '') + '" data-act="admOpt" data-k="' + k + '" data-v="' + x[0] + '">' + x[1] + '</button>').join('') + '</div>';
+    $('.content', el).innerHTML =
+      '<div class="adm-intro">Cambia los datos de la app para probarla con cualquier alumno (caso hipotético). Los cambios se ven de inmediato en Horario, Aula Virtual, Notas y Mi Ulima, y quedan guardados en este dispositivo.</div>' +
+      '<div class="block-title">Alumno</div>' +
+      '<button class="list-row" data-act="push" data-v="adminAlumno">' + ic('idCard', 'lr-ic') + '<span class="lr-main"><span class="lr-title" style="display:block">' + esc(A.apellidos + ', ' + A.nombres) + '</span><span class="lr-sub" style="display:block">Código ' + esc(A.codigo) + ' · ' + esc(A.carrera) + '</span></span>' + ic('chev', 'lr-chev') + hair + '</button>' +
+      '<div class="block-title">Cursos (' + D.CURSOS.length + ')</div>' +
+      D.CURSOS.map(c => {
+        const fin = calcFinal(c), sp = sumPesos(c.notas.evaluaciones);
+        return '<button class="list-row" data-act="push" data-v="adminCurso" data-id="' + c.id + '"><span style="width:16px;height:16px;border-radius:50%;flex:none;background:' + esc(c.color) + '"></span>' +
+          '<span class="lr-main"><span class="lr-title" style="display:block;text-transform:uppercase">' + esc(c.nombre) + '</span><span class="lr-sub" style="display:block">Sección ' + esc(c.seccion) + ' · ' + pctFaltas(c) + '% inasistencia · Promedio: ' + fmtFinal(fin) + (Math.abs(sp - 100) > 0.001 ? ' · <b style="color:#B93C0C">pesos ' + r2(sp) + '%</b>' : '') + '</span></span>' + ic('chev', 'lr-chev') + hair + '</button>';
+      }).join('') +
+      '<div class="btns"><button class="btn outline" data-act="admAdd">' + ic('plus') + 'Agregar curso</button></div>' +
+      '<div class="block-title">Cálculo de notas</div>' +
+      '<div class="f-card"><div class="opt-t">Redondeo del promedio final</div>' + pills('redondeo', [['entero', 'Entero (0.5 sube)'], ['decimal', 'Dos decimales']]) +
+      '<div class="opt-t">Si faltan notas</div>' + pills('parcial', [['false', 'Mostrar "-"'], ['true', 'Promedio parcial']]) +
+      '<div class="opt-t">Pesos en la pantalla de Notas</div>' + pills('pesos', [['false', 'Ocultar'], ['true', 'Mostrar']]) + '</div>' +
+      '<div class="btns"><button class="btn" data-act="admView">Ver la app con estos datos</button><button class="btn outline" data-act="admReset">Restablecer datos de ejemplo</button></div>' +
+      '<div class="note">Datos hipotéticos para pruebas. Se guardan solo en este dispositivo.</div>';
+  },
+});
+
+Views.adminAlumno = () => ({
+  html: topbar({ left: 'back', title: 'Datos del alumno' }) + sub('Se usan en Mi Ulima y en el carné') + '<main class="content cream"></main>',
+  mount(el) {
+    const box = $('.content', el);
+    box.innerHTML = '<div class="f-card">' +
+      fld('Apellidos', inp('apellidos', A.apellidos, 'text')) + fld('Nombres', inp('nombres', A.nombres, 'text')) +
+      fld('Código', inp('codigo', A.codigo, 'text', ' inputmode="numeric" maxlength="10"')) + fld('Carrera', inp('carrera', A.carrera, 'text')) +
+      fld('Ciclo', inp('ciclo', A.ciclo, 'text')) + fld('Periodo académico', inp('periodo', A.periodo, 'text')) + '</div>' +
+      '<div class="note">Los cambios se guardan al escribir.</div>';
+    box.addEventListener('input', e => {
+      const t = e.target.closest('[data-f]'); if (!t) return;
+      A[t.dataset.f] = t.value; saveData();
+    });
+  },
+});
+
+Views.adminCurso = p => {
+  const st = { tab: 'general' };
+  const c = () => curso(p.id);
+  function tabs() {
+    return '<div class="adm-tabs">' + [['general', 'General'], ['horario', 'Horario'], ['asistencia', 'Asistencia'], ['notas', 'Notas']]
+      .map(t => '<button class="' + (st.tab === t[0] ? 'on' : '') + '" data-la="tab" data-t="' + t[0] + '">' + t[1] + '</button>').join('') + '</div>';
+  }
+  function body() {
+    const k = c();
+    if (st.tab === 'general') {
+      return '<div class="f-card">' + fld('Nombre del curso', inp('nombre', k.nombre, 'text', ' maxlength="40"')) +
+        '<div class="f-row">' + fld('Sección', inp('seccion', k.seccion, 'text', ' maxlength="6"'), 'w-m') + fld('Docente', inp('docente', k.docente, 'text')) + '</div>' +
+        '<div class="f"><label>Color del curso</label><div class="swatches">' + PALETTE.map(col => '<button class="sw' + (k.color.toLowerCase() === col.toLowerCase() ? ' on' : '') + '" style="background:' + col + '" data-la="color" data-c="' + col + '" aria-label="Color ' + col + '"></button>').join('') + '</div>' +
+        '<div class="f-row" style="margin-top:10px">' + fld('Color personalizado (hex)', inp('color', k.color, 'color', ' maxlength="7"')) + '<div class="color-prev" id="colPrev" style="background:' + esc(k.color) + '"></div></div></div></div>' +
+        '<div class="btns"><button class="btn outline danger-o" data-la="delete">Eliminar curso</button></div>';
+    }
+    if (st.tab === 'horario') {
+      return '<div class="adm-help">Sesiones semanales del curso. El horario de la app va de 7:00 AM a 10:00 PM.</div>' +
+        (k.slots.length ? k.slots.map((s, i) => '<div class="f-card"><div class="f-row">' + fld('Día', sel('slots.' + i + '.dow', s.dow, DOWS, 'dow')) +
+          '<button class="icon-btn" data-la="delSlot" data-i="' + i + '" aria-label="Eliminar sesión">' + ic('x') + '</button></div>' +
+          '<div class="f-row">' + fld('Inicio', sel('slots.' + i + '.ini', s.ini, TIMES.map(t => [t, fmt12(t)]))) + fld('Fin', sel('slots.' + i + '.fin', s.fin, TIMES.map(t => [t, fmt12(t)]))) + '</div>' +
+          fld('Lugar', inp('slots.' + i + '.aula', s.aula, 'text', ' maxlength="24"')) + '<div class="f-warn" data-w="slot' + i + '"></div></div>').join('') :
+          '<div class="note">Este curso no tiene sesiones.</div>') +
+        '<div class="btns"><button class="btn outline" data-la="addSlot">' + ic('plus') + 'Agregar sesión</button></div>';
+    }
+    if (st.tab === 'asistencia') {
+      return '<div class="f-card"><div class="f-row">' + fld('Horas asistidas', inp('horas.asist', k.horas.asist, 'int')) + fld('Horas de inasistencia', inp('horas.faltas', k.horas.faltas, 'int')) + '</div>' +
+        fld('Total de horas del curso', inp('horas.total', k.horas.total, 'int')) + '</div>' +
+        '<div class="f-card"><div class="f-row">' + fld('Fijar % de inasistencia', inp('_pct', '', 'num', ' placeholder="Ej.: 15"')) + '<button class="btn small" data-la="applyPct">Aplicar</button></div>' +
+        '<div class="adm-help" style="padding:0">Calcula las horas de inasistencia a partir del total.</div></div>' +
+        '<div class="res" id="resAsis"></div>';
+    }
+    // Notas
+    return '<div class="adm-help">El promedio final se calcula con los componentes y sus pesos. La <b>Evaluación Continua</b> es el promedio ponderado de las evaluaciones de abajo. Deja la nota vacía si está pendiente.</div>' +
+      '<div class="block-title">Componentes del promedio final</div>' +
+      k.notas.componentes.map((x, i) => '<div class="f-card"><div class="f-row">' + fld('Nombre', inp('notas.componentes.' + i + '.nombre', x.nombre, 'text')) +
+        '<button class="icon-btn" data-la="delComp" data-i="' + i + '" aria-label="Eliminar componente">' + ic('x') + '</button></div>' +
+        '<div class="f-row">' + fld('Peso %', inp('notas.componentes.' + i + '.peso', x.peso, 'num'), 'w-s') +
+        fld('Tipo', sel('notas.componentes.' + i + '.tipo', x.tipo, [['continua', 'Evaluación continua'], ['directa', 'Nota directa']])) +
+        (x.tipo === 'directa' ? fld('Nota', inp('notas.componentes.' + i + '.nota', x.nota, 'grade', ' placeholder="-"'), 'w-s') : '') + '</div></div>').join('') +
+      '<div class="sum-line" id="sumComp"></div>' +
+      '<div class="btns" style="padding-top:4px"><button class="btn outline" data-la="addComp">' + ic('plus') + 'Agregar componente</button></div>' +
+      '<div class="block-title">Evaluaciones de la Evaluación Continua</div>' +
+      k.notas.evaluaciones.map((x, i) => '<div class="f-card"><div class="f-row">' + fld('Evaluación', inp('notas.evaluaciones.' + i + '.nombre', x.nombre, 'text')) +
+        '<button class="icon-btn" data-la="delEval" data-i="' + i + '" aria-label="Eliminar evaluación">' + ic('x') + '</button></div>' +
+        '<div class="f-row">' + fld('Peso %', inp('notas.evaluaciones.' + i + '.peso', x.peso, 'num')) + fld('Nota (0 a 20)', inp('notas.evaluaciones.' + i + '.nota', x.nota, 'grade', ' placeholder="Pendiente"')) + '</div></div>').join('') +
+      '<div class="sum-line" id="sumEval"></div>' +
+      '<div class="btns" style="padding-top:4px"><button class="btn outline" data-la="addEval">' + ic('plus') + 'Agregar evaluación</button></div>' +
+      '<div class="res" id="resNotas"></div>' +
+      '<div class="btns"><button class="btn" data-la="viewNotas">Ver la pantalla de Notas</button></div>';
+  }
+  function computed(el) {
+    const k = c();
+    $('#admPrev', el).innerHTML = courseRow(k, 'data-la="none"');
+    $('.ab-title', el).textContent = k.nombre || 'Curso';
+    if (st.tab === 'horario') {
+      k.slots.forEach((s, i) => { const w = $('[data-w="slot' + i + '"]', el); if (w) w.textContent = toMin(s.fin) <= toMin(s.ini) ? 'La hora de fin debe ser posterior a la de inicio.' : ''; });
+    }
+    if (st.tab === 'asistencia') {
+      const h = k.horas, por = Math.max(0, h.total - h.asist - h.faltas), over = h.asist + h.faltas > h.total;
+      $('#resAsis', el).innerHTML = '<div style="display:flex;gap:16px;align-items:center"><div>' + donut(110, h) + '</div><div style="flex:1">' +
+        '<div class="r-big"><span>Inasistencia</span><b>' + pctFaltas(k) + '%</b></div><div class="r-big"><span>Asistencia</span><b>' + pctAsist(k) + '%</b></div>' +
+        '<div class="r-big"><span>Por dictar</span><b>' + por + ' h</b></div></div></div>' +
+        '<div class="r-f">% inasistencia = ' + h.faltas + ' ÷ ' + h.total + ' × 100 = ' + (h.total > 0 ? r2(h.faltas / h.total * 100) : 0) + '% → se muestra ' + pctFaltas(k) + '%</div>' +
+        (over ? '<div class="f-warn">Las horas asistidas más las de inasistencia superan el total.</div>' : '');
+    }
+    if (st.tab === 'notas') {
+      const ev = k.notas.evaluaciones, comps = k.notas.componentes, se = sumPesos(ev), scp = sumPesos(comps);
+      const okBox = (s, lbl) => Math.abs(s - 100) < 0.001 ? '<span class="ok">✓ ' + lbl + ' suman 100%</span>' : '<span class="bad">⚠ ' + lbl + ' suman ' + r2(s) + '% (deben sumar 100%)</span>';
+      $('#sumComp', el).innerHTML = okBox(scp, 'Los pesos');
+      $('#sumEval', el).innerHTML = okBox(se, 'Los pesos');
+      const g = ev.filter(e => isNum(e.nota)), evc = calcContinua(k), fin = calcFinal(k);
+      const fEvc = g.length ? '(' + g.map(e => r2(e.nota) + '×' + r2(+e.peso || 0)).join(' + ') + ') ÷ ' + r2(sumPesos(g)) + ' = ' + (g.length && sumPesos(g) > 0 ? r2(g.reduce((s, e) => s + e.nota * (+e.peso || 0), 0) / sumPesos(g)) : '-') : 'sin notas registradas';
+      const cv = comps.map(x => [x, compValue(k, x)]).filter(x => x[1] != null);
+      const fFin = cv.length ? '(' + cv.map(x => r2(x[1]) + '×' + r2(+x[0].peso || 0)).join(' + ') + ') ÷ ' + r2(sumPesos(cv.map(x => x[0]))) : 'sin componentes calificados';
+      const pend = ev.length - g.length;
+      $('#resNotas', el).innerHTML = '<div class="r-big"><span>Evaluación Continua</span><b>' + fmtNota(evc) + '</b></div>' +
+        '<div class="r-f">EVC = ' + fEvc + (pend && !D.OPCIONES.parcial ? '<br>Faltan ' + pend + ' nota(s): la app muestra "-" hasta completarlas.' : '') + '</div>' +
+        '<div class="r-big" style="margin-top:8px"><span>Promedio final</span><b>' + fmtFinal(fin) + '</b></div>' +
+        '<div class="r-f">Final = ' + fFin + (fin != null ? ' = ' + r2(fin) + (D.OPCIONES.redondeo === 'entero' ? ' → redondeado: ' + fmtFinal(fin) : '') : '') + '</div>';
+    }
+  }
+  function render(el) {
+    $('.content', el).innerHTML = '<div class="adm-prev" id="admPrev"></div>' + tabs() + body() + '<div style="height:30px"></div>';
+    computed(el);
+  }
+  return {
+    html: topbar({ left: 'back', title: '' }) + sub('Editar curso · se guarda solo') + '<main class="content cream"></main>',
+    mount(el) {
+      if (!c()) { setTimeout(pop, 0); return; }
+      render(el);
+      const box = $('.content', el);
+      const onField = e => {
+        const t = e.target.closest('[data-f]'); if (!t || t.dataset.f === '_pct') return;
+        const k = c(), type = t.dataset.t;
+        if (type === 'color') {
+          const v = t.value.trim();
+          if (!/^#[0-9a-fA-F]{6}$/.test(v)) return;
+          k.color = v.toUpperCase(); $('#colPrev', el).style.background = k.color;
+          $$('.sw', el).forEach(s => s.classList.toggle('on', s.dataset.c.toLowerCase() === k.color.toLowerCase()));
+        } else {
+          const v = parseVal(type, t.value);
+          setPath(k, t.dataset.f, v);
+          if (e.type === 'change' && (type === 'grade' || type === 'num' || type === 'int')) t.value = v == null ? '' : v;
+        }
+        if (t.dataset.f.indexOf('.tipo') > 0) { saveData(); render(el); return; }
+        saveData(); computed(el);
+      };
+      box.addEventListener('input', onField);
+      box.addEventListener('change', onField);
+      box.addEventListener('click', e => {
+        const b = e.target.closest('[data-la]'); if (!b) return;
+        const k = c(), la = b.dataset.la;
+        if (la === 'none') return;
+        if (la === 'tab') { st.tab = b.dataset.t; render(el); return; }
+        if (la === 'color') { k.color = b.dataset.c; saveData(); render(el); return; }
+        if (la === 'addSlot') { k.slots.push({ dow: 1, ini: '08:00', fin: '10:00', aula: 'AULA' }); }
+        if (la === 'delSlot') { k.slots.splice(+b.dataset.i, 1); }
+        if (la === 'addEval') { k.notas.evaluaciones.push({ nombre: 'Evaluación ' + (k.notas.evaluaciones.length + 1), peso: 0, nota: null }); }
+        if (la === 'delEval') { k.notas.evaluaciones.splice(+b.dataset.i, 1); }
+        if (la === 'addComp') { k.notas.componentes.push({ nombre: 'Examen final', peso: 0, tipo: 'directa', nota: null }); }
+        if (la === 'delComp') { k.notas.componentes.splice(+b.dataset.i, 1); }
+        if (la === 'applyPct') {
+          const v = parseVal('num', $('[data-f="_pct"]', el).value);
+          if (!(v >= 0 && v <= 100)) { toast('Ingresa un porcentaje entre 0 y 100'); return; }
+          k.horas.faltas = Math.round(k.horas.total * v / 100);
+          if (k.horas.asist + k.horas.faltas > k.horas.total) k.horas.asist = Math.max(0, k.horas.total - k.horas.faltas);
+          toast('Inasistencia: ' + k.horas.faltas + ' de ' + k.horas.total + ' horas');
+        }
+        if (la === 'viewNotas') { S.logged = true; S.tab = 'aula'; const id = k.id; setRoot('intranet'); push('curso', { id }); push('notas', { id }); return; }
+        if (la === 'delete') {
+          modal({ title: 'Eliminar curso', body: '¿Eliminar <b>' + esc(k.nombre) + '</b> de la app?', actions: [{ label: 'Cancelar' }, { label: 'Eliminar', cls: 'danger', fn: () => {
+            D.CURSOS.splice(D.CURSOS.indexOf(k), 1); saveData(); toast('Curso eliminado'); pop();
+          } }] });
+          return;
+        }
+        saveData(); render(el);
+      });
+    },
+  };
+};
+
+/* ======================================================================
+   ACCIONES (delegación de clics)
+   ====================================================================== */
+const Actions = {
+  drawer: openDrawer,
+  back: pop,
+  section: b => { closeDrawer(); setRoot(b.dataset.s); },
+  tab: b => { S.tab = b.dataset.t; if (S.tab === 'horario') S.dayOffset = 0; renderIntranet(); },
+  day: b => { const d = +b.dataset.d; S.dayOffset = d === 0 ? 0 : S.dayOffset + d; renderIntranet(); },
+  refresh: b => {
+    b.textContent = 'Actualizando…';
+    setTimeout(() => { S.updatedAt = Date.now(); if (S.tab === 'aula') renderIntranet(); }, 900);
+  },
+  privacy: () => { S.privacy = !S.privacy; renderIntranet(); },
+  push: b => push(b.dataset.v, { id: b.dataset.id }),
+  login: b => {
+    b.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:2.5px"></span>';
+    setTimeout(() => {
+      S.logged = true; S.tab = 'horario'; S.dayOffset = 0;
+      renderIntranet();
+      if (!S.noticeShown) {
+        S.noticeShown = true;
+        setTimeout(() => modal({
+          banner: { kicker: 'Aviso', big: 'Encuesta Referencial Docente', icon: 'encuesta' },
+          body: 'Ya puedes completar la encuesta de tus cursos del periodo ' + esc(A.periodo || '') + '. (Aviso de ejemplo)',
+          actions: [{ label: 'Cerrar' }, { label: 'Ir a la encuesta', cls: 'strong', fn: () => push('encuestas') }],
+        }), 350);
+      }
+    }, 800);
+  },
+  forgot: () => toast('En la app oficial se abre la recuperación de contraseña. Esta réplica no maneja contraseñas.'),
+  logout: () => modal({
+    title: 'Cerrar sesión', body: '¿Deseas cerrar tu sesión?',
+    actions: [{ label: 'Cancelar' }, { label: 'Cerrar sesión', cls: 'danger', fn: () => { S.logged = false; setRoot('intranet'); } }],
+  }),
+  slot: b => {
+    const c = curso(b.dataset.c), s = c && c.slots[+b.dataset.i];
+    if (!s) return;
+    openSheet(c.nombre, '<div class="kv"><span class="k">Hora</span><span class="v">' + fmt12(s.ini) + ' - ' + fmt12(s.fin) + '</span></div>' +
+      '<div class="kv"><span class="k">Lugar</span><span class="v">' + esc(s.aula) + '</span></div>' +
+      '<div class="kv"><span class="k">Sección</span><span class="v">' + esc(c.seccion) + '</span></div>' +
+      '<div class="kv"><span class="k">Docente</span><span class="v">' + esc(c.docente) + '</span></div>' +
+      '<div class="btns" style="padding:14px 0 4px"><button class="btn" data-act="goCurso" data-id="' + c.id + '">Ver en Aula Virtual</button></div>');
+  },
+  mail: b => {
+    const c = curso(b.dataset.id), to = b.dataset.to;
+    const dest = to ? esc(to) : 'Todos los contactos de ' + esc(c.nombre) + ' (' + (classList(c).length + 1) + ')';
+    openSheet('Nuevo correo', '<div class="kv"><span class="k">Para</span><span class="v">' + dest + '</span></div>' +
+      '<div style="margin-top:12px"><input id="mailSubj" class="ta" style="min-height:0;height:44px" placeholder="Asunto" value="' + esc(c.nombre) + ' – Sección ' + esc(c.seccion) + '"></div>' +
+      '<div style="margin-top:10px"><textarea class="ta" placeholder="Escribe tu mensaje…"></textarea></div>' +
+      '<div class="btns" style="padding:14px 0 4px"><button class="btn" data-act="sendMail">' + ic('send') + 'Enviar</button></div>');
+  },
+  sendMail: () => { closeSheet(); toast('Correo enviado (simulación: no se envió nada)'); },
+  pay: b => {
+    const x = D.PAGOS[+b.dataset.i];
+    if (x.pagado) { toast('Documento ' + x.doc + ' pagado'); return; }
+    modal({
+      title: 'Pagar ' + money(x.monto),
+      body: esc(x.concepto) + '<br><br>En la app oficial el pago se realiza con tarjeta en una pasarela de pagos segura. Esta réplica no procesa pagos ni solicita datos de tarjetas.',
+      actions: [{ label: 'Entendido', cls: 'strong' }],
+    });
+  },
+  join: b => {
+    const id = b.dataset.id;
+    S.inscritos[id] = !S.inscritos[id]; store.set('inscritos', S.inscritos);
+    b.textContent = S.inscritos[id] ? 'Inscrito ✓' : 'Inscribirme';
+    toast(S.inscritos[id] ? 'Inscripción registrada (simulación)' : 'Inscripción anulada');
+  },
+  repo: b => openSheet('Repositorio', '<p><b>' + esc(b.dataset.t) + '</b></p><div class="btns" style="padding:4px 0 6px"><button class="btn" data-act="toast" data-m="Descarga no disponible en la réplica">' + ic('download') + 'Ver documento</button></div>'),
+  toast: b => toast(esc(b.dataset.m)),
+  ask: b => sendChat(b.dataset.q),
+  chatReset: () => { S.chat = GREETING.slice(); renderChat(); toast('Conversación reiniciada'); },
+  goTab: b => { S.tab = b.dataset.t; S.dayOffset = 0; setRoot('intranet'); if (!S.logged) toast('Inicia sesión para ver tu información'); },
+  goPush: b => {
+    closeSheet();
+    if (!S.logged) { setRoot('intranet'); toast('Inicia sesión primero'); return; }
+    if (S.stack[0].name !== 'intranet') setRoot('intranet');
+    push(b.dataset.v);
+  },
+  goCurso: b => {
+    closeSheet();
+    if (!S.logged) { setRoot('intranet'); toast('Inicia sesión primero'); return false; }
+    if (S.stack[0].name !== 'intranet') { S.tab = 'aula'; setRoot('intranet'); }
+    if (!curso(b.dataset.id)) return false;
+    push('curso', { id: b.dataset.id });
+    return true;
+  },
+  goNotas: b => { if (Actions.goCurso(b)) push('notas', { id: b.dataset.id }); },
+  /* Acceso oculto: tocar 5 veces la versión en Ayuda */
+  verTap: () => {
+    verTaps++;
+    clearTimeout(verTimer);
+    verTimer = setTimeout(() => { verTaps = 0; }, 2500);
+    if (verTaps >= 5) { verTaps = 0; askPassword(); }
+  },
+  admOpt: b => {
+    const k = b.dataset.k, v = b.dataset.v;
+    D.OPCIONES[k] = v === 'true' ? true : v === 'false' ? false : v;
+    saveData();
+    const t = topView(); if (t && t.def.resume) t.def.resume(t.el);
+  },
+  admAdd: () => {
+    const used = D.CURSOS.map(c => c.color.toLowerCase());
+    const color = PALETTE.find(x => used.indexOf(x.toLowerCase()) < 0) || PALETTE[D.CURSOS.length % PALETTE.length];
+    const c = {
+      id: newId(), nombre: 'NUEVO CURSO', seccion: '000', color, horas: { asist: 0, faltas: 0, total: 64 },
+      slots: [{ dow: 1, ini: '08:00', fin: '10:00', aula: 'AULA' }],
+      notas: { componentes: [{ nombre: 'Evaluación Continua', peso: 100, tipo: 'continua', nota: null }], evaluaciones: [{ nombre: 'Evaluación 1', peso: 100, nota: null }] },
+      asesorias: [], docente: 'POR ASIGNAR',
+    };
+    D.CURSOS.push(c); saveData();
+    push('adminCurso', { id: c.id });
+  },
+  admView: () => { S.logged = true; S.tab = 'aula'; setRoot('intranet'); },
+  admReset: () => modal({
+    title: 'Restablecer datos', body: 'Se borrarán todos los cambios del panel y volverán los datos de ejemplo.',
+    actions: [{ label: 'Cancelar' }, { label: 'Restablecer', cls: 'danger', fn: () => {
+      resetData(); toast('Datos de ejemplo restablecidos');
+      const t = topView(); if (t && t.def.resume) t.def.resume(t.el);
+    } }],
+  }),
+};
+
+/* ---------- Botón "atrás" de Android ---------- */
+window.__androidBack = function () {
+  const m = $('.modal-wrap'); if (m) { m.remove(); return; }
+  if (appEl().classList.contains('sheet-open')) { closeSheet(); return; }
+  if (appEl().classList.contains('drawer-open')) { closeDrawer(); return; }
+  if (S.stack.length > 1) { pop(); return; }
+  const root = S.stack[0] ? S.stack[0].name : '';
+  if (root && root !== 'intranet' && root !== 'splash') { setRoot('intranet'); return; }
+  if (window.AndroidApp && window.AndroidApp.exit) window.AndroidApp.exit();
+  else if (window.ReactNativeWebView) window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'exit' }));
+};
+
+/* ---------- Arranque ---------- */
+function clock() {
+  const n = new Date(), h = n.getHours() % 12 || 12;
+  $('#sbTime').textContent = h + ':' + pad(n.getMinutes());
+}
+function fit() {
+  if (window.matchMedia('(max-width:500px)').matches) { document.documentElement.style.removeProperty('--fit'); return; }
+  const s = Math.min(1, (window.innerHeight - 70) / 868, (window.innerWidth - 24) / 414);
+  document.documentElement.style.setProperty('--fit', s.toFixed(3));
+}
+document.addEventListener('DOMContentLoaded', () => {
+  /* Márgenes seguros que envía la app nativa del iPhone (notch / indicador de inicio) */
+  const ni = window.__nativeInsets;
+  if (ni) { document.documentElement.style.setProperty('--sat-native', (+ni.top || 0) + 'px'); document.documentElement.style.setProperty('--sab-native', (+ni.bottom || 0) + 'px'); }
+  fit(); window.addEventListener('resize', fit);
+  clock(); setInterval(clock, 15000);
+  const app = $('#app');
+  app.addEventListener('click', e => {
+    const t = e.target.closest('[data-act]');
+    if (!t || !app.contains(t)) return;
+    const fn = Actions[t.dataset.act];
+    if (fn) { e.preventDefault(); fn(t, e); }
+  });
+  $('#drawerOverlay').addEventListener('click', closeDrawer);
+  $('#sheetOverlay').addEventListener('click', closeSheet);
+  $('#sheetClose').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    window.__androidBack();
+  });
+  setRoot('splash');
+});
+window.__replica = { S, D, setRoot, push, pop, Actions, botReply, calcContinua, calcFinal, fmtFinal };
+})();
+
+</script>
+<script>
+/* Modo app instalada: guarda la app en el iPhone para que abra sin internet */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+</script>
+</body>
+</html>
