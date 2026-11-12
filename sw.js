@@ -1,6 +1,6 @@
 // Guarda la app en el teléfono para que funcione sin internet.
 // Si cambias algo en la app, sube el número de versión para que el iPhone baje la nueva.
-const VERSION = 'ulima-replica-v4';
+const VERSION = 'ulima-replica-v5';
 const ARCHIVOS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
