@@ -748,7 +748,7 @@ html.ios26 .modal .m-actions.stack button+button{border-top:0}
 @media (max-width:500px){
   :root{--sat:max(env(safe-area-inset-top,0px),var(--sat-native,0px));--sab:max(env(safe-area-inset-bottom,0px),var(--sab-native,0px))}
   body{background:#fff}
-  .stage{position:fixed;inset:0;transform:none;display:block}
+  .stage{position:fixed;left:0;top:0;right:0;bottom:auto;height:var(--app-h,100%);transform:none;display:block}
   .device{width:100%;height:100%;border-radius:0;padding:0;box-shadow:none;background:#fff}
   .device::before,.device::after{display:none}
   .screen{width:100%;height:100%;border-radius:0}
@@ -1440,7 +1440,10 @@ const horasOk = c => c.horas && c.horas.total > 0;
 const pctFaltas = c => horasOk(c) ? Math.round(c.horas.faltas / c.horas.total * 100) : 0;
 const pctAsist = c => horasOk(c) ? Math.round(c.horas.asist / c.horas.total * 100) : 0;
 const r2 = v => Math.round(v * 100 + 1e-9) / 100;
-function calcContinua(c) {
+/* Redondeo a entero: 0.5 sube (11.5 → 12; 11.25 → 11) */
+const roundNota = v => v == null ? null : Math.floor(Math.round(v * 100 + 1e-9) / 100 + 0.5);
+/* Evaluación Continua sin redondear (para mostrar el cálculo en el panel) */
+function calcContinuaRaw(c) {
   const ev = c.notas.evaluaciones;
   if (!ev.length) return null;
   const graded = ev.filter(e => isNum(e.nota));
@@ -1450,6 +1453,8 @@ function calcContinua(c) {
   if (w <= 0) return null;
   return graded.reduce((s, e) => s + e.nota * (+e.peso || 0), 0) / w;
 }
+/* Evaluación Continua (EVC): se muestra y se usa redondeada a entero */
+const calcContinua = c => roundNota(calcContinuaRaw(c));
 const compValue = (c, k) => k.tipo === 'continua' ? calcContinua(c) : (isNum(k.nota) ? k.nota : null);
 function calcFinal(c) {
   const comps = c.notas.componentes;
@@ -2880,7 +2885,7 @@ Views.admin = () => ({
       }).join('') +
       '<div class="btns"><button class="btn outline" data-act="admAdd">' + ic('plus') + 'Agregar curso</button></div>' +
       '<div class="block-title">Cálculo de notas</div>' +
-      '<div class="f-card"><div class="opt-t">El promedio final se muestra siempre como número entero (0.5 sube: 17.5 → 18).</div>' +
+      '<div class="f-card"><div class="opt-t">La Evaluación Continua y el promedio final se muestran como números enteros (0.5 sube: 17.5 → 18).</div>' +
       '<div class="opt-t" style="margin-top:10px">Si faltan notas</div>' + pills('parcial', [['false', 'Mostrar "-"'], ['true', 'Promedio parcial']]) +
       '<div class="opt-t">Pesos en la pantalla de Notas</div>' + pills('pesos', [['false', 'Ocultar'], ['true', 'Mostrar']]) + '</div>' +
       '<div class="block-title">Apariencia</div>' +
@@ -2939,7 +2944,7 @@ Views.adminCurso = p => {
         '<div class="res" id="resAsis"></div>';
     }
     // Notas
-    return '<div class="adm-help">El promedio final se calcula con los componentes y sus pesos. La <b>Evaluación Continua</b> es el promedio ponderado de las evaluaciones de abajo. Deja la nota vacía si está pendiente.</div>' +
+    return '<div class="adm-help">El promedio final se calcula con los componentes y sus pesos. La <b>Evaluación Continua</b> es el promedio ponderado de las evaluaciones de abajo. Ambos se redondean a entero (0.5 sube). Deja la nota vacía si está pendiente.</div>' +
       '<div class="block-title">Componentes del promedio final</div>' +
       k.notas.componentes.map((x, i) => '<div class="f-card"><div class="f-row">' + fld('Nombre', inp('notas.componentes.' + i + '.nombre', x.nombre, 'text')) +
         '<button class="icon-btn" data-la="delComp" data-i="' + i + '" aria-label="Eliminar componente">' + ic('x') + '</button></div>' +
@@ -2978,7 +2983,8 @@ Views.adminCurso = p => {
       $('#sumComp', el).innerHTML = okBox(scp, 'Los pesos');
       $('#sumEval', el).innerHTML = okBox(se, 'Los pesos');
       const g = ev.filter(e => isNum(e.nota)), evc = calcContinua(k), fin = calcFinal(k);
-      const fEvc = g.length ? '(' + g.map(e => r2(e.nota) + '×' + r2(+e.peso || 0)).join(' + ') + ') ÷ ' + r2(sumPesos(g)) + ' = ' + (g.length && sumPesos(g) > 0 ? r2(g.reduce((s, e) => s + e.nota * (+e.peso || 0), 0) / sumPesos(g)) : '-') : 'sin notas registradas';
+      const evRaw = g.length && sumPesos(g) > 0 ? g.reduce((s, e) => s + e.nota * (+e.peso || 0), 0) / sumPesos(g) : null;
+      const fEvc = g.length ? '(' + g.map(e => r2(e.nota) + '×' + r2(+e.peso || 0)).join(' + ') + ') ÷ ' + r2(sumPesos(g)) + ' = ' + (evRaw != null ? r2(evRaw) + ' → redondeado: ' + roundNota(evRaw) : '-') : 'sin notas registradas';
       const cv = comps.map(x => [x, compValue(k, x)]).filter(x => x[1] != null);
       const fFin = cv.length ? '(' + cv.map(x => r2(x[1]) + '×' + r2(+x[0].peso || 0)).join(' + ') + ') ÷ ' + r2(sumPesos(cv.map(x => x[0]))) : 'sin componentes calificados';
       const pend = ev.length - g.length;
@@ -3299,7 +3305,21 @@ function clock() {
   const n = new Date(), h = n.getHours() % 12 || 12;
   $('#sbTime').textContent = h + ':' + pad(n.getMinutes());
 }
+/* En la app instalada en iPhone, iOS calcula la pantalla sin la barra de estado y deja una franja
+   en blanco abajo. Se usa el alto real de la pantalla para que la app llegue hasta el borde. */
+function fitHeight() {
+  const de = document.documentElement;
+  const standalone = window.navigator.standalone === true || !!(window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
+  if (!standalone || !window.matchMedia('(max-width:500px)').matches) { de.style.removeProperty('--app-h'); return; }
+  const ae = document.activeElement;
+  if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) return;      // con el teclado abierto no se toca
+  const portrait = window.innerHeight >= window.innerWidth;
+  const full = portrait ? Math.max(screen.height, screen.width) : Math.min(screen.height, screen.width);
+  const h = window.innerHeight < full - 1 ? full : window.innerHeight;
+  de.style.setProperty('--app-h', h + 'px');
+}
 function fit() {
+  fitHeight();
   if (window.matchMedia('(max-width:500px)').matches) { document.documentElement.style.removeProperty('--fit'); return; }
   const s = Math.min(1, (window.innerHeight - 70) / 868, (window.innerWidth - 24) / 414);
   document.documentElement.style.setProperty('--fit', s.toFixed(3));
@@ -3310,6 +3330,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (ni) { document.documentElement.style.setProperty('--sat-native', (+ni.top || 0) + 'px'); document.documentElement.style.setProperty('--sab-native', (+ni.bottom || 0) + 'px'); }
   applyStyle();
   fit(); window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', () => setTimeout(fit, 300));
+  window.addEventListener('pageshow', fit);
+  document.addEventListener('focusout', () => setTimeout(fitHeight, 350));
+  setTimeout(fit, 400);
   clock(); setInterval(clock, 15000);
   setInterval(() => refreshNowLine(), 30000);
   /* En iPhone, :active (resaltado al tocar) necesita un escucha de touchstart */
