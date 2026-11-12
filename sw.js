@@ -1,6 +1,6 @@
 // Guarda la app en el teléfono para que funcione sin internet.
 // Si cambias algo en la app, sube el número de versión para que el iPhone baje la nueva.
-const VERSION = 'ulima-replica-v1';
+const VERSION = 'ulima-replica-v2';
 const ARCHIVOS = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -15,11 +15,12 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Primero intenta internet (para recibir cambios); si no hay conexión, usa la copia guardada.
+// Primero intenta internet (siempre pregunta si hay una versión nueva); si no hay conexión, usa la copia guardada.
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  const navegacion = e.request.mode === 'navigate';
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, navegacion ? { cache: 'no-cache' } : undefined)
       .then((r) => {
         if (r.ok && new URL(e.request.url).origin === location.origin) {
           const copia = r.clone();

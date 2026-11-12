@@ -1,45 +1,29 @@
-ULIMA APP (RÉPLICA) - INSTALAR EN IPHONE SIN MAC Y SIN QUE VENZA
-================================================================
+ULIMA APP - INSTALAR EN IPHONE (SIN MAC, NO VENCE)
+==================================================
 
-Archivos de esta carpeta (se suben los 6, NO este LEEME):
+Archivos que van en GitHub (los 6, NO este LEEME):
   index.html, manifest.webmanifest, sw.js, icon-180.png, icon-192.png, icon-512.png
 
-PARTE 1 - SUBIRLA A INTERNET GRATIS (GitHub Pages, una sola vez, ~10 min)
-1. Entra a https://github.com y crea una cuenta (gratis).
-2. Arriba a la derecha: "+"  ->  "New repository".
-   - Repository name: ulima-app
-   - Marca "Public" (GitHub Pages gratis solo funciona con repos públicos)
-   - Clic en "Create repository".
-3. En la página del repo, clic en el enlace "uploading an existing file".
-   Arrastra los 6 archivos (los archivos, no la carpeta) y clic en "Commit changes".
-4. Ve a "Settings" (pestaña del repo)  ->  "Pages" (menú izquierdo).
-   - Source: "Deploy from a branch"
-   - Branch: "main"  y carpeta  "/ (root)"  ->  "Save".
-5. Espera 1 o 2 minutos y recarga esa página. Aparecerá tu enlace:
-      https://TU-USUARIO.github.io/ulima-app/
-   Ábrelo en la laptop para comprobar que carga.
+PRIMERA VEZ
+1. github.com -> repositorio público -> Add file -> Upload files -> arrastra los 6 archivos -> Commit changes.
+2. Settings -> Pages -> Branch: main, carpeta / (root) -> Save.
+3. En el iPhone abre https://TU-USUARIO.github.io/NOMBRE-DEL-REPO/ en Safari
+   -> Compartir -> Agregar a pantalla de inicio -> Agregar.
+4. Ábrela siempre desde el ícono.
 
-PARTE 2 - INSTALARLA EN EL IPHONE (~1 min)
-1. Abre el enlace en Safari (con internet).
-2. Toca el botón Compartir (cuadro con flecha hacia arriba).
-3. Toca "Agregar a pantalla de inicio" (si no aparece, desliza hacia abajo
-   o toca "Más"). Si sale la opción "Abrir como app web", déjala activada.
-4. El nombre sale como "Ulima App" (puedes cambiarlo). Toca "Agregar".
-5. Ábrela SIEMPRE desde el ícono naranja de la pantalla de inicio,
-   no desde Safari.
+PANEL OCULTO (para la profesora)
+  Menú lateral -> Ayuda -> toca 5 veces seguidas el título "Ayuda" (arriba, al centro).
+  Contraseña: 123. Ahí se cambian alumno, cursos, colores, horario, asistencia y notas
+  con sus pesos. El promedio final se muestra siempre entero (0.5 sube: 17.5 -> 18).
 
-LISTO. Desde aquí:
-- No vence nunca y no necesita la laptop.
-- Funciona sin internet (después de abrirla una vez con internet).
-- Los cambios del panel oculto (Ayuda -> contraseña 123) se guardan en el iPhone.
-  Ojo: si borras el ícono, se borran esos cambios.
-- La profesora o tus compañeros pueden instalarla igual en su celular
-  (iPhone o Android) con el mismo enlace.
+GESTOS (como en la app real)
+  - Horario: desliza a la izquierda o derecha para cambiar de día (o usa las flechas).
+  - Para volver: desliza desde el borde izquierdo de la pantalla (o toca la flecha).
+  - Menú lateral: se cierra tocando afuera o deslizándolo a la izquierda.
 
-SI QUIERES CAMBIAR ALGO DE LA APP DESPUÉS
-1. Reemplaza index.html en el repo (Add file -> Upload files -> Commit).
-2. En sw.js cambia  'ulima-replica-v1'  por  'ulima-replica-v2'  (lápiz para editar -> Commit).
-3. En el iPhone abre la app con internet, ciérrala y ábrela de nuevo.
+ACTUALIZAR CUANDO HAYA CAMBIOS
+  Sube de nuevo los 6 archivos al mismo repositorio (Add file -> Upload files -> Commit).
+  En el iPhone abre la app con internet, ciérrala del todo y vuelve a abrirla.
+  Los cambios hechos en el panel oculto se conservan.
 
-NOTA: el repo es público, así que cualquiera con el enlace puede verla.
-Los datos son de ejemplo (alumna ficticia), no pongas datos reales.
+NOTA: el repositorio es público; no pongas datos personales reales en la app.
